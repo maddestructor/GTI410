@@ -22,6 +22,23 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 	int imagesHeight;
 	ColorDialogResult result;
 	
+	final double INTERPOLATION_FACTOR_HUE = 360.0 /255.0;
+	final double INTERPOLATION_FACTOR_SV = 100.0 /255.0;
+	
+	public int getHueInterPol()
+	{
+		return (int) Math.round((double)hue / INTERPOLATION_FACTOR_HUE);
+	}
+	
+	public int getSaturationInterPol()
+	{
+		return (int) Math.round(saturation / INTERPOLATION_FACTOR_SV);
+	}
+	
+	public int getValueInterPol()
+	{
+		return (int) Math.round(value / INTERPOLATION_FACTOR_SV);
+	}
 
 	HSVColorMediator(ColorDialogResult result, int imagesWidth, int imagesHeight)
 	{
@@ -29,19 +46,21 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 		this.imagesHeight = imagesHeight;
 		
 		this.result = result;
-		this.setHSV();
+		this.setRGBtoHSV();
 
 		result.addObserver(this);
 		
 		hueImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
 		saturationImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
 		valueImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		
 		computeHueImage(hue, saturation, value);
 		computeSaturationImage(hue, saturation, value);
 		computeValueImage(hue, saturation, value);	
 	}
 	
-	private void setHSV()
+	
+	private void setRGBtoHSV()
 	{
 		double max = 0;
         double min = 0;
@@ -109,9 +128,6 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 		else
 			this.saturation = (c / max) * 100;
 		
-		//System.out.println(result.getPixel().getRed() + "-" + result.getPixel().getGreen() + "-" + result.getPixel().getBlue() );
-		//System.out.println(hue + "-" + saturation + "-" + value);
-		
 	}
 	
 	public void computeHueImage(int hue, double saturation, double value) { 
@@ -130,6 +146,7 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 			red = (int) Math.round((c + m) * 255);
 			green = (int) Math.round((x + m) * 255);
 			blue = (int) Math.round(m * 255);
+			
 		}
 		else if (hue >= 60 && hue < 120)
 		{
@@ -162,15 +179,12 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 			blue = (int) Math.round((x + m) * 255);
 		}
 		
-		System.out.println(red + "-" + green + "-" + blue );
-		System.out.println(hue + "-" + saturation + "-" + value);
-		
 		Pixel p = new Pixel(red, green, blue, 255); 
 		for (int i = 0; i<imagesWidth; ++i) {
 
 			p.setRed((int)(((double)i / (double)imagesWidth)*255)); 
 			p.setGreen((int)(((double)i / (double)imagesWidth)*255)); 
-			p.setBlue((int)(((double)i / (double)imagesWidth)*255)); 
+			//p.setBlue((int)(((double)i / (double)imagesWidth)*255)); 
 			int rgb = p.getARGB();
 			for (int j = 0; j<imagesHeight; ++j) {
 				hueImage.setRGB(i, j, rgb);
@@ -246,6 +260,7 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 	}
 	
 	public void computeValueImage(int hue, double saturation, double value) { 
+		
 		double c = (saturation / 100.0) * (value / 100.0);
 		int mod = (int) (((((double)hue / 60.0) % 2) + 2) % 2);
 		double x = c * (1 - Math.abs(mod - 1));
@@ -377,6 +392,7 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 	public void update() {
 		// When updated with the new "result" color, if the "currentColor"
 				// is aready properly set, there is no need to recompute the images.
+		
 		double c = (saturation / 100.0) * (value / 100.0);
 		int mod = (int) (((((double)hue / 60.0) % 2) + 2) % 2);
 		double x = c * (1 - Math.abs(mod - 1));
@@ -424,19 +440,21 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 			blue = (int) Math.round((x + m) * 255);
 		}
 		
+		Pixel currentColor = new Pixel(red, green, blue, 255);
+		if(currentColor.getARGB() == result.getPixel().getARGB()) return;
 		
-				Pixel currentColor = new Pixel(red, green, blue, 255);
-				if(currentColor.getARGB() == result.getPixel().getARGB()) return;
-				
-				
-				this.setHSV();
-				
-				hueCS.setValue(hue);
-				saturationCS.setValue((int) Math.round(saturation));
-				valueCS.setValue((int) Math.round(value));
-				computeHueImage(hue, saturation, value);
-				computeSaturationImage(hue, saturation, value);
-				computeValueImage(hue, saturation, value);
+		this.setRGBtoHSV();
+		
+		hueCS.setValue(getHueInterPol());
+		saturationCS.setValue(getSaturationInterPol());
+		valueCS.setValue(getValueInterPol());
+		
+		//System.out.println((int) Math.round((double)hue / INTERPOLATION_FACTOR_HUE) + "-" + (int) Math.round(saturation / INTERPOLATION_FACTOR_SV) + "-" + (int) Math.round(value / INTERPOLATION_FACTOR_SV));
+		//System.out.println(hue + "-" + saturation + "-" + value);
+		
+		computeHueImage(hue, saturation, value);
+		computeSaturationImage(hue, saturation, value);
+		computeValueImage(hue, saturation, value);
 		
 	}
 
@@ -446,22 +464,35 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 		boolean updateSaturation = false;
 		boolean updateValue = false;
 		
-
-		
-		if (s == hueCS && v != hue) {
-			hue = v;
-			updateSaturation = true;
-			updateValue = true;
+		if (s == hueCS ) 
+		{
+			int trueHue = (int) Math.round((double)v * INTERPOLATION_FACTOR_HUE);
+			if (trueHue != hue)
+			{
+				this.hue = trueHue;
+				updateSaturation = true;
+				updateValue = true;
+			}
 		}
-		if (s == saturationCS && v != saturation) {
-			saturation = v;
-			updateHue = true;
-			updateValue = true;
+		if (s == saturationCS) 
+		{
+			int trueSat = (int) Math.round((double)v * INTERPOLATION_FACTOR_SV);
+			if ((int)Math.round(this.saturation) != trueSat )
+			{
+				this.saturation = Math.round((double)v * INTERPOLATION_FACTOR_SV);
+				updateHue = true;
+				updateValue = true;
+			}
 		}
-		if (s == valueCS && v != value) {
-			value = v;
-			updateHue = true;
-			updateSaturation = true;
+		if (s == valueCS) 
+		{
+			int trueVal= (int) Math.round((double)v * INTERPOLATION_FACTOR_SV);
+			if ((int)Math.round(this.value) != trueVal )
+			{
+				this.value = Math.round((double)v * INTERPOLATION_FACTOR_SV);
+				updateHue = true;
+				updateSaturation = true;
+			}
 		}
 		if (updateHue) {
 			computeHueImage(hue, saturation, value);
