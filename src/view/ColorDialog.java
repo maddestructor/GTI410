@@ -40,6 +40,7 @@ import model.Pixel;
 public class ColorDialog extends JDialog {
 	private JButton okButton;
 	private RGBColorMediator rgbMediator;
+	private HSVColorMediator hsvMediator;
 	private CMYKColorMediator cmykMediator;
 	private ActionListener okActionListener;
 	private ColorDialogResult result;
@@ -142,7 +143,23 @@ public class ColorDialog extends JDialog {
 	}
 	
 	private JPanel createHSVPanel(ColorDialogResult result, int imageWidths) {	
-		JPanel panel = new JPanel();
+        hsvMediator = new HSVColorMediator(result, imageWidths, 30);
+		
+        JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		ColorSlider csHue = new ColorSlider("H:", hsvMediator.getHueInterPol(), hsvMediator.getHueImage());
+		ColorSlider csSaturation = new ColorSlider("S:", hsvMediator.getSaturationInterPol(), hsvMediator.getSaturationImage());
+		ColorSlider csValue = new ColorSlider("V:", hsvMediator.getValueInterPol(), hsvMediator.getValueImage());
+		
+		hsvMediator.setHueCS(csHue);
+		hsvMediator.setSaturationCS(csSaturation);
+		hsvMediator.setValueCS(csValue);
+		
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(csHue);
+		panel.add(csSaturation);
+		panel.add(csValue);
 		
 		return panel;
 	}
