@@ -112,6 +112,7 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 			updateCyan = true;
 			updateMagenta = true;
 			updateYellow = true;
+			updateBlack = true;
 		}
 		if (updateCyan) {
 			computeCyanImage(cyan, magenta, jaune, noir);
@@ -153,7 +154,6 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 		_rgbArray[BLEU] = Math.round(( 1 - jaune ) * 255);
 
 		return _rgbArray;
-
        
 	}
 
@@ -179,16 +179,11 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 		if ( _jaune < _noir ){
 			_noir = _jaune;
 		}
-
-		if ( _noir == 1 ) { 
-			_cyan = 0;
-			_magenta = 0;
-			_jaune = 0;
-		}else {
-			_cyan = ( _cyan - _noir ) / ( 1 - _noir );
-			_magenta = ( _magenta - _noir ) / ( 1 - _noir );
-			_jaune = ( _jaune - _noir ) / ( 1 - _noir );
-		}
+		
+		_cyan = ( _cyan - _noir ) / ( 1 - _noir );
+		_magenta = ( _magenta - _noir ) / ( 1 - _noir );
+		_jaune = ( _jaune - _noir ) / ( 1 - _noir );
+		
 		
 		_cmykArray[NOIR] = Math.round(255 * _noir);
 		_cmykArray[CYAN] = Math.round(255 * _cyan);
@@ -201,11 +196,12 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 
 
 	public void computeCyanImage(int _cyan, int _magenta, int _jaune, int _noir) {
-		int _rouge = cmykToRGB(_cyan, _magenta, _jaune, _noir)[ROUGE];
-		int _vert = cmykToRGB(_cyan, _magenta, _jaune, _noir)[VERT];
-		int _bleu = cmykToRGB(_cyan, _magenta, _jaune, _noir)[BLEU];
-
-		Pixel p = new Pixel(_rouge, _vert, _bleu, 255); 
+//		int _rouge = cmykToRGB(_cyan, _magenta, _jaune, _noir)[ROUGE];
+//		int _vert = cmykToRGB(_cyan, _magenta, _jaune, _noir)[VERT];
+//		int _bleu = cmykToRGB(_cyan, _magenta, _jaune, _noir)[BLEU];
+//		Pixel p = new Pixel(_rouge, _vert, _bleu, 255); 
+		int[] rgbArray = cmykToRGB(_cyan, _magenta, _jaune, _noir);
+		Pixel p = new Pixel(rgbArray[ROUGE], rgbArray[VERT], rgbArray[BLEU], 255);
 		for (int i = 0; i<imagesWidth; ++i) {
 			p.setRed((int)(255 - _noir - ((double) i / (double) imagesWidth * (255 - _noir))));
 			int rgb = p.getARGB();
@@ -219,11 +215,12 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 	}
 
 	public void computeMagentaImage(int _cyan, int _magenta, int _jaune, int _noir) {
-		int _rouge = cmykToRGB(_cyan, _magenta, _jaune, _noir)[ROUGE];
-		int _vert = cmykToRGB(_cyan, _magenta, _jaune, _noir)[VERT];
-		int _bleu = cmykToRGB(_cyan, _magenta, _jaune, _noir)[BLEU];
-
-		Pixel p = new Pixel(_rouge, _vert, _bleu, 255); 
+//		int _rouge = cmykToRGB(_cyan, _magenta, _jaune, _noir)[ROUGE];
+//		int _vert = cmykToRGB(_cyan, _magenta, _jaune, _noir)[VERT];
+//		int _bleu = cmykToRGB(_cyan, _magenta, _jaune, _noir)[BLEU];
+//		Pixel p = new Pixel(_rouge, _vert, _bleu, 255); 
+		int[] rgbArray = cmykToRGB(_cyan, _magenta, _jaune, _noir);
+		Pixel p = new Pixel(rgbArray[ROUGE], rgbArray[VERT], rgbArray[BLEU], 255);
 		for (int i = 0; i<imagesWidth; ++i) {
 			p.setGreen((int)(255 - _noir - ((double) i / (double) imagesWidth * (255 - _noir))));
 			int rgb = p.getARGB();
@@ -237,11 +234,12 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 	}
 
 	public void computeYellowImage(int _cyan, int _magenta, int _jaune, int _noir) { 
-		int _rouge = cmykToRGB(_cyan, _magenta, _jaune, _noir)[ROUGE];
-		int _vert = cmykToRGB(_cyan, _magenta, _jaune, _noir)[VERT];
-		int _bleu = cmykToRGB(_cyan, _magenta, _jaune, _noir)[BLEU];
-
-		Pixel p = new Pixel(_rouge, _vert, _bleu, 255); 
+//		int _rouge = cmykToRGB(_cyan, _magenta, _jaune, _noir)[ROUGE];
+//		int _vert = cmykToRGB(_cyan, _magenta, _jaune, _noir)[VERT];
+//		int _bleu = cmykToRGB(_cyan, _magenta, _jaune, _noir)[BLEU];
+//		Pixel p = new Pixel(_rouge, _vert, _bleu, 255);
+		int[] rgbArray = cmykToRGB(_cyan, _magenta, _jaune, _noir);
+		Pixel p = new Pixel(rgbArray[ROUGE], rgbArray[VERT], rgbArray[BLEU], 255);
 		for (int i = 0; i<imagesWidth; ++i) {
 			p.setBlue((int)(255 - _noir - ((double) i / (double) imagesWidth * (255 - _noir))));
 			int rgb = p.getARGB();
@@ -256,11 +254,12 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 
 	public void computeBlackImage(int _cyan, int _magenta, int _jaune, int _noir) { 
 		int _blackReference;
-		int _rouge = cmykToRGB(_cyan, _magenta, _jaune, _noir)[ROUGE];
-		int _vert = cmykToRGB(_cyan, _magenta, _jaune, _noir)[VERT];
-		int _bleu = cmykToRGB(_cyan, _magenta, _jaune, _noir)[BLEU];
-
-		Pixel p = new Pixel(_rouge, _vert, _bleu, 255); 
+//		int _rouge = cmykToRGB(_cyan, _magenta, _jaune, _noir)[ROUGE];
+//		int _vert = cmykToRGB(_cyan, _magenta, _jaune, _noir)[VERT];
+//		int _bleu = cmykToRGB(_cyan, _magenta, _jaune, _noir)[BLEU];
+//		Pixel p = new Pixel(_rouge, _vert, _bleu, 255); 
+		int[] rgbArray = cmykToRGB(_cyan, _magenta, _jaune, _noir);
+		Pixel p = new Pixel(rgbArray[ROUGE], rgbArray[VERT], rgbArray[BLEU], 255);
 		for (int i = 0; i<imagesWidth; ++i) {
 
 			_blackReference = (int)Math.round((((double)i / (double)imagesWidth)* 255.0));
@@ -280,9 +279,6 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 			blackCS.update(blackImage);
 		}
 	}
-
-
-
 
 	/**
 	 * @return
@@ -309,7 +305,7 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 	 * @return
 	 */
 	public BufferedImage getBlackImage() {
-		return cyanImage;
+		return blackImage;
 	}
 
 	/**
