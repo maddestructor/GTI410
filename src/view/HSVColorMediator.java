@@ -181,66 +181,96 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 		
 		Pixel p = new Pixel(red, green, blue, 255); 
 		
-		for (int i = 0; i<imagesWidth; ++i) {
-
 		int maxColor = (int)Math.round((255.0 * (value / 100.0)));
-		int minColor = (int)Math.round((255.0 * (100 - saturation / 100.0)));
-	    //To yellow
-	    if (i < 25)	
-	    {
-	    	p.setRed(maxColor); 
-	    	p.setGreen((int)(((double)i / ((double)24.0))*maxColor)); 
-	    }
-	    //To Lime
-	    if (i >= 25 && i < 50)	
-	    {
-	    	int color = (int)((50 - i) * (double)((double)maxColor/25.0));
-	    	p.setRed(color); 
-	    	p.setGreen(maxColor); 
-	    	
-	    }
-	    //To Cyan
-	    if (i >= 50 && i < 75)	
-	    {
-    	    p.setGreen(maxColor); 
-	        p.setBlue((int)(((double)(i - 50) / ((double)24.0))*maxColor));
-	        
-	    }
-	    //To blue
-	    if (i >= 75 && i < 100)	
-	    {
-	    	int color = (int)((100 - i) * (double)((double)maxColor/25.0));
-	    	p.setGreen(color); 
-		    p.setBlue(maxColor); 
-	    }
-	    //To magenta
-		if (i >= 100 && i < 125)	
+		int minColor = (int)Math.round((255.0 * ((100 - saturation) / 100.0)));
+		
+		int difColor = maxColor - minColor;
+		
+		for (int i = 0; i<imagesWidth; ++i) 
 		{
-		   p.setRed((int)(((double)(i-100) / ((double)24.0))*maxColor)); 
-		   p.setBlue(maxColor); 
-		}
-		if (i >= 125 && i < 150)	
-		{
-			int color = (int)((150 - i) * (double)((double)maxColor/25.0));
-			p.setRed(maxColor); 
-			p.setBlue(color); 
 			
+			if (minColor > maxColor)
+			{
+				p.setRed(0); 
+			    p.setGreen(0); 
+			    p.setBlue(0);
+			}
+			else if (maxColor < minColor)
+			{
+				p.setRed(255); 
+			    p.setGreen(255); 
+			    p.setBlue(255);
+			}
+		    //To yellow
+			else if (i < 25)	
+		    {
+		    	int color = (int)((double)minColor + (((double)i / (double)25.0) * (double)difColor));
+		    	p.setRed(maxColor); 
+		    	p.setGreen(color); 
+		    }
+		    //To Lime
+			else if (i >= 25 && i < 50)	
+		    {
+		    	int color = (int)((double)maxColor - ((i - 25.0) * ((double)difColor / 25.0)));
+		    	p.setRed(color); 
+		    	p.setGreen(maxColor); 
+		    }
+		    //To Cyan
+			else if (i >= 50 && i < 75)	
+		    {
+		    	int color = (int)((double)minColor + (((double)(i-50) / (double)25.0) * (double)difColor));
+	    	    p.setGreen(maxColor); 
+	    	    p.setBlue(color);
+		        
+		    }
+		    //To blue
+			else if (i >= 75 && i < 100)	
+		    {
+		    	int color = (int)((double)maxColor - ((i - 75.0) * ((double)difColor / 25.0)));
+		    	p.setGreen(color); 
+			    p.setBlue(maxColor); 
+		    }
+		    //To magenta
+			else if (i >= 100 && i < 125)	
+			{
+				int color = (int)((double)minColor + (((double)(i-100) / (double)25.0) * (double)difColor));
+				p.setRed(color);
+			    p.setBlue(maxColor); 
+			}
+			else if (i >= 125 && i < 150)	
+			{
+				int color = (int)((double)maxColor - ((i - 125.0) * ((double)difColor / 25.0)));
+				//int color = (int)((150 - i) * (double)((double)maxColor/25.0));
+				p.setRed(maxColor); 
+				p.setBlue(color); 
+				
+			}
+			else if (i == 150)
+			{
+				p.setRed(maxColor); 
+			}
+			
+		    int rgb = p.getARGB();
+		    for (int j = 0; j<imagesHeight; ++j) 
+		    {
+				hueImage.setRGB(i, j, rgb);
+			}
 		}
 		
-		if (i == 150)
+		if (hueCS != null) 
 		{
-			p.setRed(maxColor); 
-		}
-		
-	    int rgb = p.getARGB();
-	    for (int j = 0; j<imagesHeight; ++j) 
-	    {
-			hueImage.setRGB(i, j, rgb);
-		}
-		}
-		if (hueCS != null) {
 			hueCS.update(hueImage);
 		}
+	}
+	
+	public int getSaturationColorValue(int color)
+	{
+		return (int)Math.round(((double)color * ((100 - saturation) / 100.0)));
+	}
+	
+	public int getValueColorValue(int color)
+	{
+		return (int)Math.round(((double)color * ((value) / 100.0)));
 	}
 	
 	public void computeSaturationImage(int hue, double saturation, double value) {
@@ -291,12 +321,26 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 			green = (int) Math.round(m * 255);
 			blue = (int) Math.round((x + m) * 255);
 		}
-		
+
 		Pixel p = new Pixel(red, green, blue, 255); 
-		for (int i = 0; i<imagesWidth; ++i) {
-			p.setRed((int)(((double)i / (double)imagesWidth)*255*(saturation / 100.0))); 
-			p.setGreen((int)(((double)i / (double)imagesWidth)*255*(saturation / 100.0))); 
-			p.setBlue((int)(((double)i / (double)imagesWidth)*255*(saturation / 100.0))); 
+		for (int i = 0; i<imagesWidth; ++i) 
+		{
+			
+			
+			int colorDifRed = 255 - this.getValueColorValue(red);
+			int colorDifGreen = 255 - this.getValueColorValue(green);
+			int colorDifBlue = 255 - this.getValueColorValue(blue);
+			
+			
+				p.setRed(0); 
+				p.setGreen(0); 
+				p.setBlue(0); 
+		
+				p.setRed((int)((double)255 - (((double)i / (double)150.0) * (double)colorDifRed))); 
+				p.setGreen((int)((double)255 - (((double)i / (double)150.0) * (double)colorDifGreen))); 
+				p.setBlue((int)((double)255 - (((double)i / (double)150.0) * (double)colorDifBlue))); 
+			
+			
 			int rgb = p.getARGB();
 			for (int j = 0; j<imagesHeight; ++j) {
 				saturationImage.setRGB(i, j, rgb);
@@ -355,12 +399,26 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 			green = (int) Math.round(m * 255);
 			blue = (int) Math.round((x + m) * 255);
 		}
-		
+
 		Pixel p = new Pixel(red, green, blue, 255); 
-		for (int i = 0; i<imagesWidth; ++i) {
-			p.setRed((int)(((double)i / (double)imagesWidth)*255)); 
-			p.setGreen((int)(((double)i / (double)imagesWidth)*255)); 
-			p.setBlue((int)(((double)i / (double)imagesWidth)*255)); 
+		
+		for (int i = 0; i<imagesWidth; ++i) 
+		{
+			int colorDifRed=0;
+			int colorDifGreen=0;
+			int colorDifBlue=0;
+			
+			
+				colorDifRed = this.getValueColorValue(red);
+				colorDifGreen = this.getValueColorValue(green);
+				colorDifBlue = this.getValueColorValue(blue);
+		
+			
+			p.setRed((int)((double)0 + (((double)i / (double)150.0) * (double)colorDifRed))); 
+			p.setGreen((int)((double)0 + (((double)i / (double)150.0) * (double)colorDifGreen))); 
+			p.setBlue((int)((double)0 + (((double)i / (double)150.0) * (double)colorDifBlue))); 
+			
+			
 			int rgb = p.getARGB();
 			for (int j = 0; j<imagesHeight; ++j) {
 				valueImage.setRGB(i, j, rgb);
