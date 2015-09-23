@@ -134,8 +134,9 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 	}
 
 	/**
-	 * Le code de cette méthode est dérivé de l'algorithme de cette page HTML:
-	 * @source https://forums.adobe.com/thread/428899
+	 * Le code de cette méthode est un dérivé et une combinaison de 
+	 * deux algorithmes (CMYK --> CMY et CMY --> RGB) de cette page HTML:
+	 * @source http://www.easyrgb.com/index.php?X=MATH
 	 */
 	private int[] cmykToRGB(int _cyan, int _magenta, int _jaune, int _noir){
 		int[] _rgbArray = new int[3];
@@ -158,8 +159,9 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 	}
 
 	/**
-	 * Le code de cette méthode est dérivé de l'algorithme de cette page HTML:
-	 * @source https://forums.adobe.com/thread/428899
+	 * Le code de cette méthode est un dérivé et une combinaison de 
+	 * deux algorithmes (RGB --> CMY et CMY --> CMYK) de cette page HTML:
+	 * @source http://www.easyrgb.com/index.php?X=MATH
 	 */
 	private int[] rgbToCMYK(int _rouge, int _vert, int _bleu){
 		int[] _cmykArray = new int[4];
