@@ -1,54 +1,53 @@
 package view;
 
-import java.awt.image.BufferedImage;
-
 import model.ObserverIF;
 import model.Pixel;
 
+import java.awt.image.BufferedImage;
 
 
-
+/**
+ * <p>Title: CMYKColorMediator</p>
+ * <p>Description: Classe permettant la conversion d'espace de couleur de RGB à CMYK et vice-versa</p>
+ * <p>Company: (ÉTS) - École de Technologie Supérieure</p>
+ *
+ * @author Mathieu Bélanger
+ * @version $Revision: 1.0 $
+ */
 public class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {
 
-	//Couleur CMJN
-	int cyan;
-	int magenta;
-	int jaune;
-	int noir;
-
+    //Constantes pour pas se mélanger dans les arrays
+    final int NOIR = 3;
+    final int CYAN = 0;
+    final int MAGENTA = 1;
+    final int JAUNE = 2;
+    final int ROUGE = 0;
+    final int VERT = 1;
+    final int BLEU = 2;
+    //Couleur CMJN
+    int cyan;
+    int magenta;
+    int jaune;
+    int noir;
 	//Couleurs RVB
 	int rouge;
 	int vert;
 	int bleu;
-
 	//Sliders
 	ColorSlider cyanCS;
 	ColorSlider magentaCS;
 	ColorSlider yellowCS;
 	ColorSlider blackCS;
-
 	//Sliders images
 	BufferedImage cyanImage;
 	BufferedImage magentaImage;
 	BufferedImage yellowImage;
 	BufferedImage blackImage;
-
 	//Size of those images
 	int imagesWidth;
 	int imagesHeight;
-
 	//Colors results
 	ColorDialogResult result;
-
-	//Constantes pour pas se mélanger dans les arrays
-	final int NOIR = 3;
-	final int CYAN = 0;
-	final int MAGENTA = 1;
-	final int JAUNE = 2;
-
-	final int ROUGE = 0;
-	final int VERT = 1;
-	final int BLEU = 2;
 
 
 	CMYKColorMediator(ColorDialogResult result, int imagesWidth, int imagesHeight) {
@@ -137,12 +136,17 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 	 * Le code de cette méthode est un dérivé et une combinaison de 
 	 * deux algorithmes (CMYK --> CMY et CMY --> RGB) de cette page HTML:
 	 * @source http://www.easyrgb.com/index.php?X=MATH
-	 */
-	private int[] cmykToRGB(int _cyan, int _magenta, int _jaune, int _noir){
-		int[] _rgbArray = new int[3];
-		
-		float cyan = (float) (_cyan / 255.0);
-		float magenta = (float) (_magenta / 255.0);
+     * @param _cyan
+     * @param _magenta
+     * @param _jaune
+     * @param _noir
+     * @return RGB Array values
+     */
+    private int[] cmykToRGB(int _cyan, int _magenta, int _jaune, int _noir) {
+        int[] _rgbArray = new int[3];
+
+        float cyan = (float) (_cyan / 255.0);
+        float magenta = (float) (_magenta / 255.0);
 		float jaune = (float) (_jaune / 255.0);
 		float noir = (float) (_noir / 255.0);
 		
@@ -162,13 +166,17 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 	 * Le code de cette méthode est un dérivé et une combinaison de 
 	 * deux algorithmes (RGB --> CMY et CMY --> CMYK) de cette page HTML:
 	 * @source http://www.easyrgb.com/index.php?X=MATH
-	 */
-	private int[] rgbToCMYK(int _rouge, int _vert, int _bleu){
-		int[] _cmykArray = new int[4];
-		
+     * @param _rouge
+     * @param _vert
+     * @param _bleu
+     * @return CMYK Array values
+     */
+    private int[] rgbToCMYK(int _rouge, int _vert, int _bleu) {
+        int[] _cmykArray = new int[4];
 
-		float _cyan = (float) (1.0 - ( _rouge / 255.0 ));
-		float _magenta = (float) (1.0 - ( _vert / 255.0 ));
+
+        float _cyan = (float) (1.0 - (_rouge / 255.0));
+        float _magenta = (float) (1.0 - ( _vert / 255.0 ));
 		float _jaune = (float) (1.0 - ( _bleu / 255.0 ));
 		float _noir = (float) 1.0;
 
@@ -194,10 +202,18 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 
 
 		return _cmykArray;
-	}
+    }
 
-
-	public void computeCyanImage(int _cyan, int _magenta, int _jaune, int _noir) {
+    /**
+     * Cette méthode permet de recalculer l'image du slider cyan en fonction
+     * de nouvelles valeurs CMYK.
+     *
+     * @param _cyan
+     * @param _magenta
+     * @param _jaune
+     * @param _noir
+     */
+    public void computeCyanImage(int _cyan, int _magenta, int _jaune, int _noir) {
 //		int _rouge = cmykToRGB(_cyan, _magenta, _jaune, _noir)[ROUGE];
 //		int _vert = cmykToRGB(_cyan, _magenta, _jaune, _noir)[VERT];
 //		int _bleu = cmykToRGB(_cyan, _magenta, _jaune, _noir)[BLEU];
@@ -213,10 +229,19 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 		}
 		if (cyanCS != null) {
 			cyanCS.update(cyanImage);
-		}
-	}
+        }
+    }
 
-	public void computeMagentaImage(int _cyan, int _magenta, int _jaune, int _noir) {
+    /**
+     * Cette méthode permet de recalculer l'image du slider magenta en fonction
+     * de nouvelles valeurs CMYK.
+     *
+     * @param _cyan
+     * @param _magenta
+     * @param _jaune
+     * @param _noir
+     */
+    public void computeMagentaImage(int _cyan, int _magenta, int _jaune, int _noir) {
 //		int _rouge = cmykToRGB(_cyan, _magenta, _jaune, _noir)[ROUGE];
 //		int _vert = cmykToRGB(_cyan, _magenta, _jaune, _noir)[VERT];
 //		int _bleu = cmykToRGB(_cyan, _magenta, _jaune, _noir)[BLEU];
@@ -232,10 +257,19 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 		}
 		if (magentaCS != null) {
 			magentaCS.update(magentaImage);
-		}
-	}
+        }
+    }
 
-	public void computeYellowImage(int _cyan, int _magenta, int _jaune, int _noir) { 
+    /**
+     * Cette méthode permet de recalculer l'image du slider jaune en fonction
+     * de nouvelles valeurs CMYK.
+     *
+     * @param _cyan
+     * @param _magenta
+     * @param _jaune
+     * @param _noir
+     */
+    public void computeYellowImage(int _cyan, int _magenta, int _jaune, int _noir) {
 //		int _rouge = cmykToRGB(_cyan, _magenta, _jaune, _noir)[ROUGE];
 //		int _vert = cmykToRGB(_cyan, _magenta, _jaune, _noir)[VERT];
 //		int _bleu = cmykToRGB(_cyan, _magenta, _jaune, _noir)[BLEU];
@@ -251,11 +285,20 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 		}
 		if (yellowCS != null) {
 			yellowCS.update(yellowImage);
-		}
-	}
+        }
+    }
 
-	public void computeBlackImage(int _cyan, int _magenta, int _jaune, int _noir) { 
-		int _blackReference;
+    /**
+     * Cette méthode permet de recalculer l'image du slider noir en fonction
+     * de nouvelles valeurs CMYK.
+     *
+     * @param _cyan
+     * @param _magenta
+     * @param _jaune
+     * @param _noir
+     */
+    public void computeBlackImage(int _cyan, int _magenta, int _jaune, int _noir) {
+        int _blackReference;
 //		int _rouge = cmykToRGB(_cyan, _magenta, _jaune, _noir)[ROUGE];
 //		int _vert = cmykToRGB(_cyan, _magenta, _jaune, _noir)[VERT];
 //		int _bleu = cmykToRGB(_cyan, _magenta, _jaune, _noir)[BLEU];

@@ -1,42 +1,52 @@
 package view;
 
-import java.awt.image.BufferedImage;
-
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-
 import model.ObserverIF;
 import model.Pixel;
 
-public class HSVColorMediator extends Object implements SliderObserver, ObserverIF {
-	ColorSlider hueCS;
-	ColorSlider saturationCS;
-	ColorSlider valueCS;
-	int hue;
-	int saturation;
-	int value;
-	BufferedImage hueImage;
-	BufferedImage saturationImage;
-	BufferedImage valueImage;
-	int imagesWidth;
-	int imagesHeight;
-	ColorDialogResult result;
-	
-	//Couleurs RVB
-	int rouge;
-	int vert;
-	int bleu;
-	
-	final int ROUGE = 0;
-	final int VERT = 1;
-	final int BLEU = 2;
-	
-	final int HUE = 0;
-	final int SATURATION = 1;
-	final int VALUE = 2;
+import java.awt.image.BufferedImage;
 
-	final double INTERPOLATION_FACTOR_HUE = 360.0 /255.0;
-	final double INTERPOLATION_FACTOR_SV = 100.0 /255.0;
+/**
+ * <p>Title: HSVColorMediator</p>
+ * <p>Description: Classe permettant la conversion d'espace de couleur de RGB à HSV et vice-versa</p>
+ * <p>Company: (ÉTS) - École de Technologie Supérieure</p>
+ *
+ * @author Mathieu Bélanger et Guillaume Pelletier
+ * @version $Revision: 1.0 $
+ */
+public class HSVColorMediator extends Object implements SliderObserver, ObserverIF {
+
+    //Les constantes de nos tableaux
+    final int ROUGE = 0;
+    final int VERT = 1;
+    final int BLEU = 2;
+    final int HUE = 0;
+    final int SATURATION = 1;
+    final int VALUE = 2;
+    //Constantes d'interpolation
+    final double INTERPOLATION_FACTOR_HUE = 360.0 / 255.0;
+    final double INTERPOLATION_FACTOR_SV = 100.0 / 255.0;
+    //Sliders
+    ColorSlider hueCS;
+    ColorSlider saturationCS;
+    ColorSlider valueCS;
+    //Valeurs HSV
+    int hue;
+    int saturation;
+    int value;
+    //Les images des sliders
+    BufferedImage hueImage;
+    BufferedImage saturationImage;
+    BufferedImage valueImage;
+    //Les grandeurs de celles-ci
+    int imagesWidth;
+    int imagesHeight;
+    //Notre fenêtre de dialogue
+    ColorDialogResult result;
+    //Couleurs RVB
+    int rouge;
+    int vert;
+    int bleu;
+
 
 	HSVColorMediator(ColorDialogResult result, int imagesWidth, int imagesHeight)
 	{
@@ -62,27 +72,42 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 		
 		computeHueImage(hue, saturation, value);
 		computeSaturationImage(hue, saturation, value);
-		computeValueImage(hue, saturation, value);	
-	}
-	
-	public int getHueInterPol()
-	{
-		return (int) Math.round((double)hue / INTERPOLATION_FACTOR_HUE);
-	}
-	
-	public int getSaturationInterPol()
-	{
-		return (int) Math.round(saturation / INTERPOLATION_FACTOR_SV);
-	}
-	
-	public int getValueInterPol()
-	{
-		return (int) Math.round(value / INTERPOLATION_FACTOR_SV);
-	}
-	
-	private int[] rgbToHSV(int _rouge, int _vert, int _bleu)
-	{
-		float[] hsvArray = new float[3];
+        computeValueImage(hue, saturation, value);
+    }
+
+    /**
+     * @return
+     */
+    public int getHueInterPol() {
+        return (int) Math.round((double) hue / INTERPOLATION_FACTOR_HUE);
+    }
+
+    /**
+     * @return
+     */
+    public int getSaturationInterPol() {
+        return (int) Math.round(saturation / INTERPOLATION_FACTOR_SV);
+    }
+
+    /**
+     * @return
+     */
+    public int getValueInterPol() {
+        return (int) Math.round(value / INTERPOLATION_FACTOR_SV);
+    }
+
+
+    /**
+     * Le code de cette méthode est un dérivé de l'algorithme (RGB --> HSV) de cette page HTML:
+     *
+     * @param _rouge
+     * @param _vert
+     * @param _bleu
+     * @return HSV Array values
+     * @source http://www.easyrgb.com/index.php?X=MATH
+     */
+    private int[] rgbToHSV(int _rouge, int _vert, int _bleu) {
+        float[] hsvArray = new float[3];
 
 		float rouge = (float) ( _rouge / 255.0 );                     //RGB from 0 to 255
 		float vert = (float) ( _vert / 255.0 );
@@ -122,16 +147,25 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 		returnArray[VALUE] = (int) Math.round(hsvArray[VALUE] * 100.0);
 		
 		return returnArray;
-		
-	}
-	
-	private int[] hsvToRGB(int _hue, int _saturation, int _value){
-		
-		int[] rgbArray = new int[3];
-		
-		float _rouge;
-		float _vert;
-		float _bleu;
+
+    }
+
+    /**
+     * Le code de cette méthode est un dérivé de l'algorithme (HSV --> RGB) de cette page HTML:
+     *
+     * @param _hue
+     * @param _saturation
+     * @param _value
+     * @return RGB Array values
+     * @source http://www.easyrgb.com/index.php?X=MATH
+     */
+    private int[] hsvToRGB(int _hue, int _saturation, int _value) {
+
+        int[] rgbArray = new int[3];
+
+        float _rouge;
+        float _vert;
+        float _bleu;
 		
 		float hue = (float) ( _hue / 360.0 );                     //RGB from 0 to 255
 		float saturation = (float) ( _saturation / 100.0 );
@@ -200,17 +234,25 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 			rgbArray[BLEU] = Math.round(_bleu * 255);
 			
 			return rgbArray;
-			
-			
-		}
-	}
-	
-	public void computeHueImage(int _hue, int _saturation, int _value) { 
-		int[] rgbArray = hsvToRGB(_hue, _saturation, _value);
-		Pixel p = new Pixel(rgbArray[ROUGE], rgbArray[VERT], rgbArray[BLEU], 255);
-		
-		int t;
-		for (int i = 0; i<imagesWidth; ++i) {
+
+
+        }
+    }
+
+    /**
+     * Cette méthode permet de recalculer l'image du slider Hue en fonction
+     * de nouvelles valeurs HSV.
+     *
+     * @param _hue
+     * @param _saturation
+     * @param _value
+     */
+    public void computeHueImage(int _hue, int _saturation, int _value) {
+        int[] rgbArray = hsvToRGB(_hue, _saturation, _value);
+        Pixel p = new Pixel(rgbArray[ROUGE], rgbArray[VERT], rgbArray[BLEU], 255);
+
+        int t;
+        for (int i = 0; i<imagesWidth; ++i) {
 			t = (int) Math.round(((double)i / (double)imagesWidth)*360.0);
 			p.setRed(hsvToRGB(t,_saturation,_value)[ROUGE]);
 			p.setGreen(hsvToRGB(t,_saturation,_value)[VERT]);
@@ -222,16 +264,24 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 		}
 		if (hueCS != null) {
 			hueCS.update(hueImage);
-		}
-		
-	}
-	
-	public void computeSaturationImage(int _hue, int _saturation, int _value) {
-		int[] rgbArray = hsvToRGB(_hue, _saturation, _value);
-		Pixel p = new Pixel(rgbArray[ROUGE], rgbArray[VERT], rgbArray[BLEU], 255);
-		
-		int t;
-		for (int i = 0; i<imagesWidth; ++i) {
+        }
+
+    }
+
+    /**
+     * Cette méthode permet de recalculer l'image du slider Saturation en fonction
+     * de nouvelles valeurs HSV.
+     *
+     * @param _hue
+     * @param _saturation
+     * @param _value
+     */
+    public void computeSaturationImage(int _hue, int _saturation, int _value) {
+        int[] rgbArray = hsvToRGB(_hue, _saturation, _value);
+        Pixel p = new Pixel(rgbArray[ROUGE], rgbArray[VERT], rgbArray[BLEU], 255);
+
+        int t;
+        for (int i = 0; i<imagesWidth; ++i) {
 			t = (int) Math.round(((double)i / (double)imagesWidth)*100.0);
 			p.setRed(hsvToRGB(_hue,t,_value)[ROUGE]);
 			p.setGreen(hsvToRGB(_hue,t,_value)[VERT]);
@@ -244,16 +294,24 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 		}
 		if (saturationCS != null) {
 			saturationCS.update(saturationImage);
-		}
-		
-	}
-	
-	public void computeValueImage(int _hue, int _saturation, int _value) { 
-		int[] rgbArray = hsvToRGB(_hue, _saturation, _value);
-		Pixel p = new Pixel(rgbArray[ROUGE], rgbArray[VERT], rgbArray[BLEU], 255);
-		
-		int t;
-		for (int i = 0; i<imagesWidth; ++i) {
+        }
+
+    }
+
+    /**
+     * Cette méthode permet de recalculer l'image du slider Value en fonction
+     * de nouvelles valeurs HSV.
+     *
+     * @param _hue
+     * @param _saturation
+     * @param _value
+     */
+    public void computeValueImage(int _hue, int _saturation, int _value) {
+        int[] rgbArray = hsvToRGB(_hue, _saturation, _value);
+        Pixel p = new Pixel(rgbArray[ROUGE], rgbArray[VERT], rgbArray[BLEU], 255);
+
+        int t;
+        for (int i = 0; i<imagesWidth; ++i) {
 			t = (int) Math.round(((double)i / (double)imagesWidth)*100.0);
 			p.setRed(hsvToRGB(_hue,_saturation,t)[ROUGE]);
 			p.setGreen(hsvToRGB(_hue,_saturation,t)[VERT]);
