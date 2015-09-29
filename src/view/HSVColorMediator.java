@@ -170,12 +170,13 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 		float hue = (float) ( _hue / 360.0 );                     //RGB from 0 to 255
 		float saturation = (float) ( _saturation / 100.0 );
 		float value = (float) ( _value / 100.0 );
-		
-		float var_h;
-		float var_i;
-		float var_1;
-		float var_2;
-		float var_3;
+
+        //Variables temporaires servant aux calculs mathématiques
+        float temp_h;
+        float temp_i;
+        float temp_1;
+        float temp_2;
+        float temp_3;
 
 		if ( saturation == 0 )                       //hue from 0 to 1
 		{
@@ -187,47 +188,42 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 		}
 		else
 		{
-			var_h = hue * 6;
-			if ( var_h == 6 )
-			{
-				var_h = 0   ;   //hue must be < 1
-			}
-			
-			var_i = (float) Math.floor(var_h);    //Or ... var_i = floor( var_h )
-			var_1 = value * ( 1 - saturation );
-			var_2 = value * ( 1 - saturation * ( var_h - var_i ) );
-			var_3 = value * ( 1 - saturation * ( 1 - ( var_h - var_i ) ) );
+            temp_h = hue * 6;
+            if (temp_h == 6) {
+                temp_h = 0;   //hue must be < 1
+            }
 
-			if      ( var_i == 0 ) {
-				_rouge = value; 
-				_vert = var_3; 
-				_bleu = var_1;
-			}
-			else if ( var_i == 1 ) {
-				_rouge = var_2; 
-				_vert = value; 
-				_bleu = var_1; 
-			}
-			else if ( var_i == 2 ) {
-				_rouge = var_1; 
-				_vert = value; 
-				_bleu = var_3; 
-			}
-			else if ( var_i == 3 ) { 
-				_rouge = var_1; 
-				_vert = var_2; 
-				_bleu = value;    
-			}
-			else if ( var_i == 4 ) { 
-				_rouge = var_3; 
-				_vert = var_1; 
-				_bleu = value; 
+            temp_i = (float) Math.floor(temp_h);    //Or ... var_i = floor( var_h )
+            temp_1 = value * (1 - saturation);
+            temp_2 = value * (1 - saturation * (temp_h - temp_i));
+            temp_3 = value * (1 - saturation * (1 - (temp_h - temp_i)));
+
+            if (temp_i == 0) {
+                _rouge = value;
+                _vert = temp_3;
+                _bleu = temp_1;
+            } else if (temp_i == 1) {
+                _rouge = temp_2;
+                _vert = value;
+                _bleu = temp_1;
+            } else if (temp_i == 2) {
+                _rouge = temp_1;
+                _vert = value;
+                _bleu = temp_3;
+            } else if (temp_i == 3) {
+                _rouge = temp_1;
+                _vert = temp_2;
+                _bleu = value;
+			} else if (temp_i == 4) {
+                _rouge = temp_3;
+                _vert = temp_1;
+                _bleu = value;
 			}
 			else                   { 
-				_rouge = value; 
-				_vert = var_1; 
-				_bleu = var_2; 
-			}
+				_rouge = value;
+                _vert = temp_1;
+                _bleu = temp_2;
+            }
 
 			rgbArray[ROUGE] = Math.round(_rouge * 255);                 //_rouge_vert_bleu results from 0 to 255
 			rgbArray[VERT] = Math.round(_vert * 255);
