@@ -189,13 +189,18 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 		if ( _jaune < _noir ){
 			_noir = _jaune;
 		}
-		
-		_cyan = ( _cyan - _noir ) / ( 1 - _noir );
-		_magenta = ( _magenta - _noir ) / ( 1 - _noir );
-		_jaune = ( _jaune - _noir ) / ( 1 - _noir );
-		
-		
-		_cmykArray[NOIR] = Math.round(255 * _noir);
+
+        if (_noir == 1) { //Black
+            _cyan = 0;
+            _magenta = 0;
+            _jaune = 0;
+        } else {
+            _cyan = (_cyan - _noir) / (1 - _noir);
+            _magenta = (_magenta - _noir) / (1 - _noir);
+            _jaune = (_jaune - _noir) / (1 - _noir);
+        }
+
+        _cmykArray[NOIR] = Math.round(255 * _noir);
 		_cmykArray[CYAN] = Math.round(255 * _cyan);
 		_cmykArray[MAGENTA] = Math.round(255 * _magenta);
 		_cmykArray[JAUNE] = Math.round(255 * _jaune);
