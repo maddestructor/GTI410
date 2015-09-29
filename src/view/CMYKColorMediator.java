@@ -425,7 +425,7 @@ public class CMYKColorMediator extends Object implements SliderObserver, Observe
 		// When updated with the new "result" color, if the "currentColor"
 		// is aready properly set, there is no need to recompute the images.
 		int[] rgbArray = cmykToRGB(this.cyan, this.magenta, this.jaune, this.noir);
-		Pixel currentColor = new Pixel(rgbArray[ROUGE], rgbArray[BLEU], rgbArray[VERT], 255);
+		Pixel currentColor = new Pixel(rgbArray[ROUGE], rgbArray[VERT], rgbArray[BLEU], 255);
 		if(currentColor.getARGB() == result.getPixel().getARGB()) return;
 
 		rouge = result.getPixel().getRed();

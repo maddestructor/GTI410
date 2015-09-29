@@ -397,7 +397,7 @@ public class HSVColorMediator extends Object implements SliderObserver, Observer
 		// When updated with the new "result" color, if the "currentColor"
 		// is aready properly set, there is no need to recompute the images.
 		int[] rgbArray = hsvToRGB(this.hue, this.saturation, this.value);
-		Pixel currentColor = new Pixel(rgbArray[ROUGE], rgbArray[BLEU], rgbArray[VERT], 255);
+		Pixel currentColor = new Pixel(rgbArray[ROUGE], rgbArray[VERT], rgbArray[BLEU], 255);
 		if(currentColor.getARGB() == result.getPixel().getARGB()) return;
 
 		rouge = result.getPixel().getRed();
