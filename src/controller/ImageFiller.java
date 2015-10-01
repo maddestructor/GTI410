@@ -14,7 +14,8 @@ public class ImageFiller extends AbstractTransformer {
 
 	private ImageX currentImage;
 	private int currentImageWidth;
-	private Pixel fillColor = new Pixel(0xFF00FFFF);
+    private int currentImageHeight;
+    private Pixel fillColor = new Pixel(0xFF00FFFF);
 	private Pixel borderColor = new Pixel(0xFFFFFF00);
 	private boolean floodFill = true;
 	private int hueThreshold = 1;
@@ -23,9 +24,8 @@ public class ImageFiller extends AbstractTransformer {
 	
 	@Override
 	public int getID() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+        return ID_FLOODER;
+    }
 
 	
 	protected boolean mouseClicked(MouseEvent e){
@@ -35,6 +35,7 @@ public class ImageFiller extends AbstractTransformer {
 			if (shape instanceof ImageX) {
 				currentImage = (ImageX)shape;
 				currentImageWidth = currentImage.getImageWidth();
+                currentImageHeight = currentImage.getImageHeight();
 
 				Point pt = e.getPoint();
 				Point ptTransformed = new Point();
@@ -48,8 +49,14 @@ public class ImageFiller extends AbstractTransformer {
 				if (0 <= ptTransformed.x && ptTransformed.x < currentImage.getImageWidth() &&
 				    0 <= ptTransformed.y && ptTransformed.y < currentImage.getImageHeight()) {
 					currentImage.beginPixelUpdate();
-					horizontalLineFill(ptTransformed);
-					currentImage.endPixelUpdate();											 	
+                    if (floodFill) {
+
+//                        floodFill(ptTransformed.x, ptTransformed.y, Color interiorColor, fillColor.toColor());
+
+                    } else {
+
+                    }
+                    currentImage.endPixelUpdate();
 					return true;
 				}
 			}
