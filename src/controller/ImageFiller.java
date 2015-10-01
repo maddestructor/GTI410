@@ -1,18 +1,14 @@
 package controller;
 
-import java.awt.AWTException;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Robot;
+import model.ImageX;
+import model.Pixel;
+import model.Shape;
+
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.NoninvertibleTransformException;
 import java.util.List;
 import java.util.Stack;
-
-import model.ImageX;
-import model.Pixel;
-import model.Shape;
 
 public class ImageFiller extends AbstractTransformer {
 
@@ -124,18 +120,18 @@ public class ImageFiller extends AbstractTransformer {
 	}
 
 	/**
-	 * @return
-	 */
-	public Pixel getFillColor() {
-		return fillColor;
-	}
-
-	/**
 	 * @param pixel
 	 */
 	public void setBorderColor(Pixel pixel) {
 		borderColor = pixel;
 		System.out.println("new border color");
+	}
+
+	/**
+	 * @return
+	 */
+	public Pixel getFillColor() {
+		return fillColor;
 	}
 
 	/**
@@ -163,8 +159,7 @@ public class ImageFiller extends AbstractTransformer {
 		} 
 		else 
 		{
-			//setBoundaryFill(0, 0, Graphics g, Color fillColor,
-		            //Color boundaryColor);
+			System.out.println("now doing Boundary Fill");
 		}
 	}
 
@@ -176,20 +171,6 @@ public class ImageFiller extends AbstractTransformer {
 	}
 
 	/**
-	 * @return
-	 */
-	public int getSaturationThreshold() {
-		return saturationThreshold;
-	}
-
-	/**
-	 * @return
-	 */
-	public int getValueThreshold() {
-		return valueThreshold;
-	}
-
-	/**
 	 * @param i
 	 */
 	public void setHueThreshold(int i) {
@@ -198,11 +179,25 @@ public class ImageFiller extends AbstractTransformer {
 	}
 
 	/**
+	 * @return
+	 */
+	public int getSaturationThreshold() {
+		return saturationThreshold;
+	}
+
+	/**
 	 * @param i
 	 */
 	public void setSaturationThreshold(int i) {
 		saturationThreshold = i;
 		System.out.println("new Saturation Threshold " + i);
+	}
+
+	/**
+	 * @return
+	 */
+	public int getValueThreshold() {
+		return valueThreshold;
 	}
 
 	/**
