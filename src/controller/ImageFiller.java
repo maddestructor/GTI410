@@ -94,16 +94,29 @@ public class ImageFiller extends AbstractTransformer {
 		
 	}
 	
+	private float[] interpolHSB()
+	{
+		float[] floatValueHSB = new float[3];
+		
+		floatValueHSB[0] = this.hueThreshold / 180;
+		floatValueHSB[1] = this.saturationThreshold / 255;
+		floatValueHSB[2] = this.valueThreshold / 255;
+		
+		return floatValueHSB;
+	}
+	
 	private void boundaryFill(int x, int y, Color boundaryColor,
             Color newColor) throws AWTException
 	{
-	       
-        if (currentImage.getPixelInt(x, y) != boundaryColor.getRGB() && currentImage.getPixelInt(x, y) != newColor.getRGB()) 
+	    float[] tabInterpolHSB = interpolHSB();
+        //if (currentImage.getPixelInt(x, y) != boundaryColor.getRGB() && currentImage.getPixelInt(x, y) != newColor.getRGB()) 
+		if (currentImage.getPixelInt(x, y) >= Color.HSBtoRGB(tabInterpolHSB[0]-(float)0.05, tabInterpolHSB[1]-(float)0.05, tabInterpolHSB[2]-(float)0.05) && currentImage.getPixelInt(x, y) <= Color.HSBtoRGB(tabInterpolHSB[0]+(float)0.05, tabInterpolHSB[1]+(float)0.05, tabInterpolHSB[2]+(float)0.05) && currentImage.getPixelInt(x, y) != newColor.getRGB()) 
         {
         	currentImage.setPixel(x, y, newColor.getRGB());
             //g.setColor(fillColor);
             //g.drawLine(x, y, x, y);
-           
+            
+        	
         	boundaryFill(x + 1, y, boundaryColor, newColor);
         	boundaryFill(x - 1, y, boundaryColor, newColor);
         	boundaryFill(x, y + 1, boundaryColor, newColor);
