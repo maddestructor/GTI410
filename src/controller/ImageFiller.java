@@ -83,26 +83,35 @@ public class ImageFiller extends AbstractTransformer {
 		
 	}
 	
-	public void setFloodFill() 
+	public void floodFill(int x, int y, Color interiorColor,
+            Color newColor) throws AWTException
 	{
+		if (currentImage.getPixelInt(x, y) != interiorColor.getRGB()) return;
+
+		currentImage.setPixel(x, y, newColor.getRGB());
 		
+	    floodFill(x - 1, y, interiorColor, newColor);
+	    floodFill(x + 1, y, interiorColor, newColor);
+	    floodFill(x, y - 1, interiorColor, newColor);
+	    floodFill(x, y + 1, interiorColor, newColor);
+
 		
 	}
 	
-	public void setBoundaryFill(int x, int y, Graphics g, Color fillColor,
-            Color boundaryColor) throws AWTException
+	private void boundaryFill(int x, int y, Color boundaryColor,
+            Color newColor) throws AWTException
 	{
-		Color currentPixelColor = new Color(currentImage.getPixelInt(x, y));
 	       
-        if (!currentPixelColor.equals(boundaryColor) && !currentPixelColor.equals(fillColor)) 
+        if (currentImage.getPixelInt(x, y) != boundaryColor.getRGB() && currentImage.getPixelInt(x, y) != newColor.getRGB()) 
         {
-            g.setColor(fillColor);
-            g.drawLine(x, y, x, y);
+        	currentImage.setPixel(x, y, newColor.getRGB());
+            //g.setColor(fillColor);
+            //g.drawLine(x, y, x, y);
            
-            setBoundaryFill(x + 1, y, g, fillColor, boundaryColor);
-            setBoundaryFill(x - 1, y, g, fillColor, boundaryColor);
-            setBoundaryFill(x, y + 1, g, fillColor, boundaryColor);
-            setBoundaryFill(x, y - 1, g, fillColor, boundaryColor);
+        	boundaryFill(x + 1, y, boundaryColor, newColor);
+        	boundaryFill(x - 1, y, boundaryColor, newColor);
+        	boundaryFill(x, y + 1, boundaryColor, newColor);
+        	boundaryFill(x, y - 1, boundaryColor, newColor);
 
         }
 	}
@@ -148,10 +157,14 @@ public class ImageFiller extends AbstractTransformer {
 	 */
 	public void setFloodFill(boolean b) {
 		floodFill = b;
-		if (floodFill) {
+		if (floodFill) 
+		{
 			System.out.println("now doing Flood Fill");
-		} else {
-			System.out.println("now doing Boundary Fill");
+		} 
+		else 
+		{
+			//setBoundaryFill(0, 0, Graphics g, Color fillColor,
+		            //Color boundaryColor);
 		}
 	}
 
