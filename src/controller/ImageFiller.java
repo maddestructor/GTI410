@@ -48,12 +48,26 @@ public class ImageFiller extends AbstractTransformer {
 				ptTransformed.translate(-currentImage.getPosition().x, -currentImage.getPosition().y);
 				if (0 <= ptTransformed.x && ptTransformed.x < currentImage.getImageWidth() &&
 				    0 <= ptTransformed.y && ptTransformed.y < currentImage.getImageHeight()) {
+
 					currentImage.beginPixelUpdate();
+
                     if (floodFill) {
 
-//                        floodFill(ptTransformed.x, ptTransformed.y, Color interiorColor, fillColor.toColor());
+                        Pixel clickedPixel = currentImage.getPixel(ptTransformed.x, ptTransformed.y);
+
+                        try {
+                            floodFill(ptTransformed.x, ptTransformed.y, clickedPixel.toColor(), fillColor.toColor());
+                        } catch (AWTException e1) {
+                            e1.printStackTrace();
+                        }
 
                     } else {
+
+                        try {
+                            boundaryFill(ptTransformed.x, ptTransformed.y, borderColor.toColor(), fillColor.toColor());
+                        } catch (AWTException e1) {
+                            e1.printStackTrace();
+                        }
 
                     }
                     currentImage.endPixelUpdate();
@@ -92,7 +106,7 @@ public class ImageFiller extends AbstractTransformer {
 		if (currentImage.getPixelInt(x, y) != interiorColor.getRGB()) return;
 
 		currentImage.setPixel(x, y, newColor.getRGB());
-		
+
 	    floodFill(x - 1, y, interiorColor, newColor);
 	    floodFill(x + 1, y, interiorColor, newColor);
 	    floodFill(x, y - 1, interiorColor, newColor);
@@ -187,16 +201,17 @@ public class ImageFiller extends AbstractTransformer {
 	 * @return
 	 */
 	public int getHueThreshold() {
-		return hueThreshold;
-	}
 
-	/**
-	 * @param i
-	 */
-	public void setHueThreshold(int i) {
-		hueThreshold = i;
-		System.out.println("new Hue Threshold " + i);
-	}
+        return hueThreshold;
+    }
+
+    /**
+     * @param i
+     */
+    public void setHueThreshold(int i) {
+        hueThreshold = i;
+        System.out.println("new Hue Threshold " + i);
+    }
 
 	/**
 	 * @return
@@ -211,14 +226,15 @@ public class ImageFiller extends AbstractTransformer {
 	public void setSaturationThreshold(int i) {
 		saturationThreshold = i;
 		System.out.println("new Saturation Threshold " + i);
-	}
+    }
 
-	/**
-	 * @return
-	 */
-	public int getValueThreshold() {
-		return valueThreshold;
-	}
+    /**
+     * @return
+     */
+    public int getValueThreshold() {
+
+        return valueThreshold;
+    }
 
 	/**
 	 * @param i
