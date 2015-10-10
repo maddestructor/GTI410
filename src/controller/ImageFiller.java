@@ -107,10 +107,17 @@ public class ImageFiller extends AbstractTransformer {
 
 		currentImage.setPixel(x, y, newColor.getRGB());
 
-	    floodFill(x - 1, y, interiorColor, newColor);
+//		4-WAY fill
+        floodFill(x - 1, y, interiorColor, newColor);
 	    floodFill(x + 1, y, interiorColor, newColor);
 	    floodFill(x, y - 1, interiorColor, newColor);
 	    floodFill(x, y + 1, interiorColor, newColor);
+
+//		8-WAY fill
+//		floodFill(x - 1, y - 1, interiorColor, newColor);
+//		floodFill(x - 1, y + 1, interiorColor, newColor);
+//		floodFill(x + 1, y - 1, interiorColor, newColor);
+//		floodFill(x + 1, y + 1, interiorColor, newColor);
 
 		
 	}
@@ -130,23 +137,29 @@ public class ImageFiller extends AbstractTransformer {
             Color newColor) throws AWTException
 	{
 	    float[] tabInterpolHSB = interpolHSB();
-        //if (currentImage.getPixelInt(x, y) != boundaryColor.getRGB() && currentImage.getPixelInt(x, y) != newColor.getRGB()) 
-		if (currentImage.getPixelInt(x, y) >= Color.HSBtoRGB(tabInterpolHSB[0]-(float)0.05, tabInterpolHSB[1]-(float)0.05, tabInterpolHSB[2]-(float)0.05) && currentImage.getPixelInt(x, y) <= Color.HSBtoRGB(tabInterpolHSB[0]+(float)0.05, tabInterpolHSB[1]+(float)0.05, tabInterpolHSB[2]+(float)0.05) && currentImage.getPixelInt(x, y) != newColor.getRGB()) 
+        if (currentImage.getPixelInt(x, y) != boundaryColor.getRGB() && currentImage.getPixelInt(x, y) != newColor.getRGB())
+//		if (currentImage.getPixelInt(x, y) >= Color.HSBtoRGB(tabInterpolHSB[0]-(float)0.05, tabInterpolHSB[1]-(float)0.05, tabInterpolHSB[2]-(float)0.05) && currentImage.getPixelInt(x, y) <= Color.HSBtoRGB(tabInterpolHSB[0]+(float)0.05, tabInterpolHSB[1]+(float)0.05, tabInterpolHSB[2]+(float)0.05) && currentImage.getPixelInt(x, y) != newColor.getRGB())
         {
-        	currentImage.setPixel(x, y, newColor.getRGB());
+            currentImage.setPixel(x, y, newColor.getRGB());
             //g.setColor(fillColor);
             //g.drawLine(x, y, x, y);
-            
-        	
-        	boundaryFill(x + 1, y, boundaryColor, newColor);
-        	boundaryFill(x - 1, y, boundaryColor, newColor);
-        	boundaryFill(x, y + 1, boundaryColor, newColor);
-        	boundaryFill(x, y - 1, boundaryColor, newColor);
+
+//          4-WAY fill
+            boundaryFill(x + 1, y, boundaryColor, newColor);
+            boundaryFill(x - 1, y, boundaryColor, newColor);
+            boundaryFill(x, y + 1, boundaryColor, newColor);
+            boundaryFill(x, y - 1, boundaryColor, newColor);
+
+//            8-WAY fill
+//		      boundaryFill(x + 1, y + 1, boundaryColor, newColor);
+//            boundaryFill(x - 1, y - 1, boundaryColor, newColor);
+//            boundaryFill(x - 1, y + 1, boundaryColor, newColor);
+//            boundaryFill(x + 1, y - 1, boundaryColor, newColor);
 
         }
-	}
-	
-	/**
+    }
+
+    /**
 	 * @return
 	 */
 	public Pixel getBorderColor() {
