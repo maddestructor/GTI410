@@ -56,7 +56,7 @@ public class ImageFiller extends AbstractTransformer {
                         Pixel clickedPixel = currentImage.getPixel(ptTransformed.x, ptTransformed.y);
 
                         try {
-                            floodFill(ptTransformed.x, ptTransformed.y, clickedPixel.toColor(), fillColor.toColor());
+                            floodFill(ptTransformed.x, ptTransformed.y, fillColor);
                         } catch (AWTException e1) {
                             e1.printStackTrace();
                         }
@@ -99,28 +99,48 @@ public class ImageFiller extends AbstractTransformer {
 		}
 		
 	}
-	
-	public void floodFill(int x, int y, Color interiorColor,
-            Color newColor) throws AWTException
-	{
-		if (currentImage.getPixelInt(x, y) != interiorColor.getRGB()) return;
 
-		currentImage.setPixel(x, y, newColor.getRGB());
+    public void floodFill(int initialX, int initialY,
+                          Pixel fillColorPixel) throws AWTException {
 
-//		4-WAY fill
-        floodFill(x - 1, y, interiorColor, newColor);
-	    floodFill(x + 1, y, interiorColor, newColor);
-	    floodFill(x, y - 1, interiorColor, newColor);
-	    floodFill(x, y + 1, interiorColor, newColor);
+        System.out.println("Processing flood fill");
 
-//		8-WAY fill
-//		floodFill(x - 1, y - 1, interiorColor, newColor);
-//		floodFill(x - 1, y + 1, interiorColor, newColor);
-//		floodFill(x + 1, y - 1, interiorColor, newColor);
-//		floodFill(x + 1, y + 1, interiorColor, newColor);
+        Pixel interiorColorPixel = currentImage.getPixel(initialX, initialY);
 
-		
-	}
+        Stack<Point> recursiveStack = new Stack();
+
+        recursiveStack.push(new Point(initialX, initialY));
+
+        while (!recursiveStack.empty()) {
+            Point currentPoint = recursiveStack.pop();
+
+            if (isInTheImage(currentPoint)) {
+                Pixel currentPixel = currentImage.getPixel(currentPoint.x, currentPoint.y);
+
+                if (currentPixel.equals(interiorColorPixel) && !currentPixel.equals(fillColorPixel)) {
+
+                    currentImage.setPixel(currentPoint.x, currentPoint.y, fillColorPixel);
+
+                    Point topNeighbor = new Point(currentPoint.x, currentPoint.y + 1);
+                    Point rightNeighbor = new Point(currentPoint.x + 1, currentPoint.y);
+                    Point bottomNeighbor = new Point(currentPoint.x, currentPoint.y - 1);
+                    Point leftNeighbor = new Point(currentPoint.x - 1, currentPoint.y);
+
+                    recursiveStack.push(topNeighbor);
+                    recursiveStack.push(rightNeighbor);
+                    recursiveStack.push(bottomNeighbor);
+                    recursiveStack.push(leftNeighbor);
+                }
+
+            }
+
+        }
+    }
+
+
+    private boolean isInTheImage(Point point) {
+        return point.x >= 0 && point.x < currentImageWidth && point.y >= 0 && point.y < currentImageHeight;
+    }
 	
 	private float[] interpolHSB()
 	{
