@@ -100,7 +100,7 @@ public class ImageFiller extends AbstractTransformer {
 		
 	}
 
-    public void floodFill(int initialX, int initialY,
+    private void floodFill(int initialX, int initialY,
                           Pixel fillColorPixel) throws AWTException {
 
         System.out.println("Processing flood fill");
