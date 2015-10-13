@@ -12,17 +12,20 @@ import java.util.Stack;
 
 public class ImageFiller extends AbstractTransformer {
 
-	private ImageX currentImage;
+    private final int HUE = 0;
+    private final int SATURATION = 1;
+    private final int VALUE = 2;
+    private ImageX currentImage;
 	private int currentImageWidth;
     private int currentImageHeight;
     private Pixel fillColor = new Pixel(0xFF00FFFF);
 	private Pixel borderColor = new Pixel(0xFFFFFF00);
 	private boolean floodFill = true;
-	private int hueThreshold = 1;
-	private int saturationThreshold = 2;
-	private int valueThreshold = 3;
-	
-	@Override
+    private int hueThreshold = 0;
+    private int saturationThreshold = 0;
+    private int valueThreshold = 0;
+
+    @Override
 	public int getID() {
         return ID_FLOODER;
     }
@@ -64,7 +67,7 @@ public class ImageFiller extends AbstractTransformer {
                     } else {
 
                         try {
-                            boundaryFill(ptTransformed.x, ptTransformed.y, borderColor.toColor(), fillColor.toColor());
+                            boundaryFill(ptTransformed.x, ptTransformed.y, borderColor, fillColor);
                         } catch (AWTException e1) {
                             e1.printStackTrace();
                         }
@@ -153,42 +156,84 @@ public class ImageFiller extends AbstractTransformer {
     private boolean isInTheImage(Point point) {
         return point.x >= 0 && point.x < currentImageWidth && point.y >= 0 && point.y < currentImageHeight;
     }
-	
-	private float[] interpolHSB()
-	{
-		float[] floatValueHSB = new float[3];
-		
-		floatValueHSB[0] = this.hueThreshold / 180;
-		floatValueHSB[1] = this.saturationThreshold / 255;
-		floatValueHSB[2] = this.valueThreshold / 255;
-		
-		return floatValueHSB;
-	}
-	
-	private void boundaryFill(int x, int y, Color boundaryColor,
-            Color newColor) throws AWTException
-	{
-	    float[] tabInterpolHSB = interpolHSB();
-        if (currentImage.getPixelInt(x, y) != boundaryColor.getRGB() && currentImage.getPixelInt(x, y) != newColor.getRGB())
-//		if (currentImage.getPixelInt(x, y) >= Color.HSBtoRGB(tabInterpolHSB[0]-(float)0.05, tabInterpolHSB[1]-(float)0.05, tabInterpolHSB[2]-(float)0.05) && currentImage.getPixelInt(x, y) <= Color.HSBtoRGB(tabInterpolHSB[0]+(float)0.05, tabInterpolHSB[1]+(float)0.05, tabInterpolHSB[2]+(float)0.05) && currentImage.getPixelInt(x, y) != newColor.getRGB())
-        {
-            currentImage.setPixel(x, y, newColor.getRGB());
-            //g.setColor(fillColor);
-            //g.drawLine(x, y, x, y);
 
-//          4-WAY fill
-            boundaryFill(x + 1, y, boundaryColor, newColor);
-            boundaryFill(x - 1, y, boundaryColor, newColor);
-            boundaryFill(x, y + 1, boundaryColor, newColor);
-            boundaryFill(x, y - 1, boundaryColor, newColor);
 
-//            8-WAY fill
-//		      boundaryFill(x + 1, y + 1, boundaryColor, newColor);
-//            boundaryFill(x - 1, y - 1, boundaryColor, newColor);
-//            boundaryFill(x - 1, y + 1, boundaryColor, newColor);
-//            boundaryFill(x + 1, y - 1, boundaryColor, newColor);
+    private void boundaryFill(int initialX, int initialY, Pixel boundaryColorPixel,
+                              Pixel fillColorPixel) throws AWTException {
+
+        System.out.println("Processing boundary fill");
+
+        Stack<Point> recursiveStack = new Stack();
+
+        recursiveStack.push(new Point(initialX, initialY));
+
+        while (!recursiveStack.empty()) {
+            Point currentPoint = recursiveStack.pop();
+
+            if (isInTheImage(currentPoint)) {
+                Pixel currentPixel = currentImage.getPixel(currentPoint.x, currentPoint.y);
+
+                if (!isWithinBoundaryColorLimits(currentPixel, boundaryColorPixel) && !currentPixel.equals(fillColorPixel)) {
+
+                    currentImage.setPixel(currentPoint.x, currentPoint.y, fillColorPixel);
+
+//					4-WAY
+                    Point topNeighbor = new Point(currentPoint.x, currentPoint.y + 1);
+                    Point rightNeighbor = new Point(currentPoint.x + 1, currentPoint.y);
+                    Point bottomNeighbor = new Point(currentPoint.x, currentPoint.y - 1);
+                    Point leftNeighbor = new Point(currentPoint.x - 1, currentPoint.y);
+
+                    recursiveStack.push(topNeighbor);
+                    recursiveStack.push(rightNeighbor);
+                    recursiveStack.push(bottomNeighbor);
+                    recursiveStack.push(leftNeighbor);
+
+//					8-WAY
+//					Point topLeftNeighbor = new Point(currentPoint.x - 1, currentPoint.y + 1);
+//					Point topRightNeighbor = new Point(currentPoint.x + 1, currentPoint.y + 1);
+//					Point bottomRightNeighbor = new Point(currentPoint.x + 1, currentPoint.y - 1);
+//					Point bottomLeftNeighbor = new Point(currentPoint.x - 1, currentPoint.y - 1);
+
+//					recursiveStack.push(topLeftNeighbor);
+//					recursiveStack.push(topRightNeighbor);
+//					recursiveStack.push(bottomRightNeighbor);
+//					recursiveStack.push(bottomLeftNeighbor);
+                }
+
+            }
 
         }
+
+
+//        if (currentImage.getPixelInt(initialX, initialY) != boundaryColorPixel.getRGB() && currentImage.getPixelInt(initialX, initialY) != fillColorPixel.getRGB())
+//		if (currentImage.getPixelInt(x, y) >= Color.HSBtoRGB(tabInterpolHSB[0]-(float)0.05, tabInterpolHSB[1]-(float)0.05, tabInterpolHSB[2]-(float)0.05) && currentImage.getPixelInt(x, y) <= Color.HSBtoRGB(tabInterpolHSB[0]+(float)0.05, tabInterpolHSB[1]+(float)0.05, tabInterpolHSB[2]+(float)0.05) && currentImage.getPixelInt(x, y) != newColor.getRGB())
+
+    }
+
+    private boolean isWithinBoundaryColorLimits(Pixel pixelToConsider, Pixel boundaryPixel) {
+
+        float[] pixelHSBValues = Color.RGBtoHSB(pixelToConsider.getRed(), pixelToConsider.getGreen(), pixelToConsider.getBlue(), null);
+        float[] boundaryPixelHSBValues = Color.RGBtoHSB(boundaryPixel.getRed(), boundaryPixel.getGreen(), boundaryPixel.getBlue(), null);
+
+
+        int hueDifference = Math.round(Math.abs(pixelHSBValues[HUE] - boundaryPixelHSBValues[HUE]) * 180);
+        int saturationDifference = Math.round(Math.abs(pixelHSBValues[SATURATION] - boundaryPixelHSBValues[SATURATION]) * 255);
+        int valueDifference = Math.round(Math.abs(pixelHSBValues[VALUE] - boundaryPixelHSBValues[VALUE]) * 255);
+
+        return hueDifference <= hueThreshold
+                && saturationDifference <= saturationThreshold
+                && valueDifference <= valueThreshold;
+
+    }
+
+    private float[] thresholdHSB() {
+        float[] floatValueHSB = new float[3];
+
+        floatValueHSB[HUE] = (float) this.hueThreshold / 360;
+        floatValueHSB[SATURATION] = (float) this.saturationThreshold / 255;
+        floatValueHSB[VALUE] = (float) this.valueThreshold / 255;
+
+        return floatValueHSB;
     }
 
     /**
