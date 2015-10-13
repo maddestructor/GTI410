@@ -121,6 +121,7 @@ public class ImageFiller extends AbstractTransformer {
 
                     currentImage.setPixel(currentPoint.x, currentPoint.y, fillColorPixel);
 
+//					4-WAY
                     Point topNeighbor = new Point(currentPoint.x, currentPoint.y + 1);
                     Point rightNeighbor = new Point(currentPoint.x + 1, currentPoint.y);
                     Point bottomNeighbor = new Point(currentPoint.x, currentPoint.y - 1);
@@ -130,6 +131,17 @@ public class ImageFiller extends AbstractTransformer {
                     recursiveStack.push(rightNeighbor);
                     recursiveStack.push(bottomNeighbor);
                     recursiveStack.push(leftNeighbor);
+
+//					8-WAY
+//					Point topLeftNeighbor = new Point(currentPoint.x - 1, currentPoint.y + 1);
+//					Point topRightNeighbor = new Point(currentPoint.x + 1, currentPoint.y + 1);
+//					Point bottomRightNeighbor = new Point(currentPoint.x + 1, currentPoint.y - 1);
+//					Point bottomLeftNeighbor = new Point(currentPoint.x - 1, currentPoint.y - 1);
+
+//					recursiveStack.push(topLeftNeighbor);
+//					recursiveStack.push(topRightNeighbor);
+//					recursiveStack.push(bottomRightNeighbor);
+//					recursiveStack.push(bottomLeftNeighbor);
                 }
 
             }
