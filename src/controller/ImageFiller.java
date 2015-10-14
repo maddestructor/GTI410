@@ -224,9 +224,11 @@ public class ImageFiller extends AbstractTransformer {
          int saturationDifference = Math.round(Math.abs(pixelHSBValues[SATURATION] - boundaryPixelHSBValues[SATURATION]) * 255);
          int valueDifference = Math.round(Math.abs(pixelHSBValues[VALUE] - boundaryPixelHSBValues[VALUE]) * 255);
 
-         return (hue <= hueThreshold + (int)Math.round((double)hueDifference * 0.5) && hue >= hueThreshold - (int)Math.round((double)hueDifference * 0.5))
-                 && (saturation <= this.saturationThreshold + (int)Math.round((double)saturationDifference * 0.5) && saturation >= this.saturationThreshold - (int)Math.round((double)saturationDifference * 0.5))
-                 && (value <= this.valueThreshold + (int)Math.round((double)valueDifference * 0.5) && value >= this.valueThreshold - (int)Math.round((double)valueDifference * 0.5));
+         //return (hue <= hueThreshold + (int)Math.round((double)hueDifference * 0.5) && hue >= hueThreshold - (int)Math.round((double)hueDifference * 0.5))
+                 //&& (saturation <= this.saturationThreshold + (int)Math.round((double)saturationDifference * 0.5) && saturation >= this.saturationThreshold - (int)Math.round((double)saturationDifference * 0.5))
+                 //&& (value <= this.valueThreshold + (int)Math.round((double)valueDifference * 0.5) && value >= this.valueThreshold - (int)Math.round((double)valueDifference * 0.5));
+         //return hueDifference <= this.hueThreshold && saturationDifference <= this.saturationThreshold && valueDifference <= this.valueThreshold;
+         return (hueDifference <= (this.hueThreshold + 180.0 * 0.05) && hueDifference >= (this.hueThreshold - 180.0 * 0.05)) && (saturationDifference <= (this.saturationThreshold + 255.0 * 0.05)  && saturationDifference >= (this.saturationThreshold - 255.0 * 0.05)) && (valueDifference <= (this.valueThreshold + 255.0 * 0.05) && valueDifference >= (this.valueThreshold - 255.0 * 0.05));
 
     }
 
