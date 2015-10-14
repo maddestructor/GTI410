@@ -172,8 +172,7 @@ public class ImageFiller extends AbstractTransformer {
 
             if (isInTheImage(currentPoint)) {
                 Pixel currentPixel = currentImage.getPixel(currentPoint.x, currentPoint.y);
-//              if (currentImage.getPixelInt(initialX, initialY) != boundaryColorPixel.getRGB() && currentImage.getPixelInt(initialX, initialY) != fillColorPixel.getRGB())
-//        		if (currentImage.getPixelInt(x, y) >= Color.HSBtoRGB(tabInterpolHSB[0]-(float)0.05, tabInterpolHSB[1]-(float)0.05, tabInterpolHSB[2]-(float)0.05) && currentImage.getPixelInt(x, y) <= Color.HSBtoRGB(tabInterpolHSB[0]+(float)0.05, tabInterpolHSB[1]+(float)0.05, tabInterpolHSB[2]+(float)0.05) && currentImage.getPixelInt(x, y) != newColor.getRGB())
+
                 if (!isWithinBoundaryColorLimits(currentPixel, boundaryColorPixel) && !currentPixel.equals(fillColorPixel)) {
 
                     currentImage.setPixel(currentPoint.x, currentPoint.y, fillColorPixel);
@@ -213,20 +212,17 @@ public class ImageFiller extends AbstractTransformer {
 
     private boolean isWithinBoundaryColorLimits(Pixel pixelToConsider, Pixel boundaryPixel) {
 
-    	 float[] pixelHSBValues = Color.RGBtoHSB(pixelToConsider.getRed(), pixelToConsider.getGreen(), pixelToConsider.getBlue(), null);
-         float[] boundaryPixelHSBValues = Color.RGBtoHSB(boundaryPixel.getRed(), boundaryPixel.getGreen(), boundaryPixel.getBlue(), null);
-         
-         int hue = (int) Math.round((pixelHSBValues[HUE] * 180.0));
-         int saturation = (int) Math.round((pixelHSBValues[SATURATION] * 255.0));
-         int value = (int) Math.round((pixelHSBValues[VALUE] * 255.0));
+        float[] pixelHSBValues = Color.RGBtoHSB(pixelToConsider.getRed(), pixelToConsider.getGreen(), pixelToConsider.getBlue(), null);
+        float[] boundaryPixelHSBValues = Color.RGBtoHSB(boundaryPixel.getRed(), boundaryPixel.getGreen(), boundaryPixel.getBlue(), null);
 
-         int hueDifference = Math.round(Math.abs(pixelHSBValues[HUE] - boundaryPixelHSBValues[HUE]) * 180);
-         int saturationDifference = Math.round(Math.abs(pixelHSBValues[SATURATION] - boundaryPixelHSBValues[SATURATION]) * 255);
-         int valueDifference = Math.round(Math.abs(pixelHSBValues[VALUE] - boundaryPixelHSBValues[VALUE]) * 255);
 
-         return (hue <= hueThreshold + (int)Math.round((double)hueDifference * 0.5) && hue >= hueThreshold - (int)Math.round((double)hueDifference * 0.5))
-                 && (saturation <= this.saturationThreshold + (int)Math.round((double)saturationDifference * 0.5) && saturation >= this.saturationThreshold - (int)Math.round((double)saturationDifference * 0.5))
-                 && (value <= this.valueThreshold + (int)Math.round((double)valueDifference * 0.5) && value >= this.valueThreshold - (int)Math.round((double)valueDifference * 0.5));
+        int hueDifference = Math.round(Math.abs(pixelHSBValues[HUE] - boundaryPixelHSBValues[HUE]) * 180);
+        int saturationDifference = Math.round(Math.abs(pixelHSBValues[SATURATION] - boundaryPixelHSBValues[SATURATION]) * 255);
+        int valueDifference = Math.round(Math.abs(pixelHSBValues[VALUE] - boundaryPixelHSBValues[VALUE]) * 255);
+
+        return hueDifference <= hueThreshold
+                && saturationDifference <= saturationThreshold
+                && valueDifference <= valueThreshold;
 
     }
 
