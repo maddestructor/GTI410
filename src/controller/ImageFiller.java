@@ -220,6 +220,7 @@ public class ImageFiller extends AbstractTransformer {
         int saturationDifference = Math.round(Math.abs(pixelHSBValues[SATURATION] - boundaryPixelHSBValues[SATURATION]) * 255);
         int valueDifference = Math.round(Math.abs(pixelHSBValues[VALUE] - boundaryPixelHSBValues[VALUE]) * 255);
 
+        //This is now working
         return hueDifference <= hueThreshold
                 && saturationDifference <= saturationThreshold
                 && valueDifference <= valueThreshold;
