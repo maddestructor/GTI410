@@ -14,20 +14,16 @@
 */
 
 package view;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.EtchedBorder;
-
+import controller.TransformersIndex;
 import model.KernelModel;
 import model.ObserverIF;
-import controller.TransformersIndex;
+
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * <p>Title: FilterKernelPanel</p>
@@ -175,59 +171,59 @@ public class FilterKernelPanel extends JPanel implements ObserverIF {
 			case 2: // Gaussian filter
 			{
 				double o = 0.5;
-	           
-				float meanKernel[][] = {{getGaussianMatrixAtPosition(-1,1), getGaussianMatrixAtPosition(0,1), getGaussianMatrixAtPosition(1,1)},
+
+				float gaussianKernel[][] = {{getGaussianMatrixAtPosition(-1, 1), getGaussianMatrixAtPosition(0, 1), getGaussianMatrixAtPosition(1, 1)},
 										{getGaussianMatrixAtPosition(-1,0), getGaussianMatrixAtPosition(0,0), getGaussianMatrixAtPosition(1,0)},
 										{getGaussianMatrixAtPosition(-1,-1), getGaussianMatrixAtPosition(0,-1), getGaussianMatrixAtPosition(1,-1)}};
-				_kernelPanel.setKernelValues(meanKernel);
+				_kernelPanel.setKernelValues(gaussianKernel);
 			} 
 			break;
 			case 3: // 4-Neighbour Laplacian
 			{
-				float meanKernel[][] = {{0, 1, 0},
+				float laplacian4Kernel[][] = {{0, 1, 0},
 										{1, 4, 1},
 										{0, 1, 0}};
-				_kernelPanel.setKernelValues(meanKernel);
+				_kernelPanel.setKernelValues(laplacian4Kernel);
 			} 
 			break;
 			case 4: // 8-Neighbour Laplacian
 			{
-				float meanKernel[][] = {{1, 1, 1},
+				float laplacian8Kernel[][] = {{1, 1, 1},
 										{1, 8, 1},
 										{1, 1, 1}};
-				_kernelPanel.setKernelValues(meanKernel);
+				_kernelPanel.setKernelValues(laplacian8Kernel);
 			} 
 			break;
 			case 5: // Prewitt Horiz
 			{
-				float meanKernel[][] = {{5, 2, 3},
+				float prewittHKernel[][] = {{5, 2, 3},
 										{4, 5, 6},
 										{7, 8, 9}};
-				_kernelPanel.setKernelValues(meanKernel);
+				_kernelPanel.setKernelValues(prewittHKernel);
 			} 
 			break;
 			case 6: // Prewitt Vert
 			{
-				float meanKernel[][] = {{6, 2, 3},
+				float prewittVKernel[][] = {{6, 2, 3},
 										{4, 5, 6},
 										{7, 8, 9}};
-				_kernelPanel.setKernelValues(meanKernel);
+				_kernelPanel.setKernelValues(prewittVKernel);
 			} 
 			break;
 			case 7: // Sobel Horiz 
 			{
-				float meanKernel[][] = {{-1, 0, 1},
+				float sobelHKernel[][] = {{-1, 0, 1},
 										{-2, 0, 2},
 										{-1, 0, 1}};
-				_kernelPanel.setKernelValues(meanKernel);
+				_kernelPanel.setKernelValues(sobelHKernel);
 			} 
 			break;
 			case 8: // Sobel Vert
 			{
-				float meanKernel[][] = {{-1, -2, -1},
+				float sobelVKernel[][] = {{-1, -2, -1},
 										{0, 0, 0},
 										{1, 2, 1}};
-				_kernelPanel.setKernelValues(meanKernel);
+				_kernelPanel.setKernelValues(sobelVKernel);
 			} 
 			break;
 			case 9: // Roberts 45 degrees
