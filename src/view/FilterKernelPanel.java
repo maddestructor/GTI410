@@ -152,8 +152,8 @@ public class FilterKernelPanel extends JPanel implements ObserverIF {
 	
 	private float getGaussianMatrixAtPosition(int x, int y)
 	{
-		double o = 0.5;
-		return (float) Math.pow(Math.E, -(Math.pow(x, 2) + Math.pow(y, 2)) / (2 *Math.pow(o, 0.5)));
+		double o = 0.2;
+		return (float) Math.exp(-(Math.pow(x, 2) + Math.pow(y, 2)) / (2 *Math.pow(o, 0.5)));
 	}
 	
 	private void setFilter(String string) {
@@ -185,7 +185,7 @@ public class FilterKernelPanel extends JPanel implements ObserverIF {
 			case 3: // 4-Neighbour Laplacian
 			{
 				float meanKernel[][] = {{0, 1, 0},
-										{1, 4, 1},
+										{1, -4, 1},
 										{0, 1, 0}};
 				_kernelPanel.setKernelValues(meanKernel);
 			} 
@@ -193,7 +193,7 @@ public class FilterKernelPanel extends JPanel implements ObserverIF {
 			case 4: // 8-Neighbour Laplacian
 			{
 				float meanKernel[][] = {{1, 1, 1},
-										{1, 8, 1},
+										{1, -8, 1},
 										{1, 1, 1}};
 				_kernelPanel.setKernelValues(meanKernel);
 			} 
@@ -232,18 +232,18 @@ public class FilterKernelPanel extends JPanel implements ObserverIF {
 			break;
 			case 9: // Roberts 45 degrees
 			{
-				float robertsKernel[][] = {{9, 2, 3},
+				float meanKernel[][] = {{9, 2, 3},
 										{4, 5, 6},
 										{7, 8, 9}};
-				_kernelPanel.setKernelValues(robertsKernel);
+				_kernelPanel.setKernelValues(meanKernel);
 			} 
 			break;
 			case 10: // Roberts -45 degrees
 			{
-				float robertsKernel[][] = {{10, 2, 3},
+				float meanKernel[][] = {{10, 2, 3},
 										{4, 5, 6},
 										{7, 8, 9}};
-				_kernelPanel.setKernelValues(robertsKernel);
+				_kernelPanel.setKernelValues(meanKernel);
 			} 
 			break;
 			case 0: // Custom
