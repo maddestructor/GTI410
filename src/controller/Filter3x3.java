@@ -25,7 +25,7 @@ import model.*;
  * @version $Revision: 1.11 $
  */
 public class Filter3x3 extends Filter {	
-	private float filterMatrix[][] = null;
+	private double filterMatrix[][] = null;
 	
 	/**
 	 * Default constructor.
@@ -35,7 +35,7 @@ public class Filter3x3 extends Filter {
 	public Filter3x3(PaddingStrategy paddingStrategy, 
 						 ImageConversionStrategy conversionStrategy) {
 		super(paddingStrategy, conversionStrategy);	
-		filterMatrix = new float[3][3];
+		filterMatrix = new double[3][3];
 		
 		filterMatrix[0][0] = filterMatrix[1][0] = filterMatrix[2][0] = 
 		filterMatrix[0][1] = filterMatrix[1][1] = filterMatrix[2][1] =
@@ -48,7 +48,7 @@ public class Filter3x3 extends Filter {
 	 * @param conversionStrategy ImageConversionStrategy used
 	 */
 	public Filter3x3(PaddingStrategy paddingStrategy, 
-						 ImageConversionStrategy conversionStrategy, float[][] fillMatrix) {
+						 ImageConversionStrategy conversionStrategy, double[][] fillMatrix) {
 		super(paddingStrategy, conversionStrategy);	
 		filterMatrix = fillMatrix;
 		
