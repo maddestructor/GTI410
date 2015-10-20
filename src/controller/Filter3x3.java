@@ -24,9 +24,9 @@ import model.*;
  * @author unascribed
  * @version $Revision: 1.11 $
  */
-public class Filter3x3 extends Filter {
+public class Filter3x3 extends Filter {	
 	private double filterMatrix[][] = null;
-
+	
 	/**
 	 * Default constructor.
 	 * @param paddingStrategy PaddingStrategy used
