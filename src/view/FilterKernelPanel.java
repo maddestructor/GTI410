@@ -168,74 +168,74 @@ public class FilterKernelPanel extends JPanel implements ObserverIF {
 			break;
 			case 2: // Gaussian filter
 			{
-				float meanKernel[][] = {{2, 2, 3},
-										{4, 5, 6},
-										{7, 8, 9}};
-				_kernelPanel.setKernelValues(meanKernel);
+				float gaussianKernel[][] = {{2, 2, 3},
+											{4, 5, 6},
+											{7, 8, 9}};
+				_kernelPanel.setKernelValues(gaussianKernel);
 			} 
 			break;
 			case 3: // 4-Neighbour Laplacian
 			{
-				float meanKernel[][] = {{3, 2, 3},
+				float laplacian4Kernel[][] = {{3, 2, 3},
 										{4, 5, 6},
 										{7, 8, 9}};
-				_kernelPanel.setKernelValues(meanKernel);
+				_kernelPanel.setKernelValues(laplacian4Kernel);
 			} 
 			break;
 			case 4: // 8-Neighbour Laplacian
 			{
-				float meanKernel[][] = {{4, 2, 3},
-										{4, 5, 6},
-										{7, 8, 9}};
-				_kernelPanel.setKernelValues(meanKernel);
+				float laplacian8Kernel[][] = {{4, 2, 3},
+											{4, 5, 6},
+											{7, 8, 9}};
+				_kernelPanel.setKernelValues(laplacian8Kernel);
 			} 
 			break;
 			case 5: // Prewitt Horiz
 			{
-				float meanKernel[][] = {{5, 2, 3},
+				float prewittKernel[][] = {{5, 2, 3},
 										{4, 5, 6},
 										{7, 8, 9}};
-				_kernelPanel.setKernelValues(meanKernel);
+				_kernelPanel.setKernelValues(prewittKernel);
 			} 
 			break;
 			case 6: // Prewitt Vert
 			{
-				float meanKernel[][] = {{6, 2, 3},
+				float prewittKernel[][] = {{6, 2, 3},
 										{4, 5, 6},
 										{7, 8, 9}};
-				_kernelPanel.setKernelValues(meanKernel);
+				_kernelPanel.setKernelValues(prewittKernel);
 			} 
 			break;
 			case 7: // Sobel Horiz 
 			{
-				float meanKernel[][] = {{7, 2, 3},
+				float sobelHKernel[][] = {{7, 2, 3},
 										{4, 5, 6},
 										{7, 8, 9}};
-				_kernelPanel.setKernelValues(meanKernel);
+				_kernelPanel.setKernelValues(sobelHKernel);
 			} 
 			break;
 			case 8: // Sobel Vert
 			{
-				float meanKernel[][] = {{8, 2, 3},
+				float sobelVKernel[][] = {{8, 2, 3},
 										{4, 5, 6},
 										{7, 8, 9}};
-				_kernelPanel.setKernelValues(meanKernel);
+				_kernelPanel.setKernelValues(sobelVKernel);
 			} 
 			break;
 			case 9: // Roberts 45 degrees
 			{
-				float meanKernel[][] = {{9, 2, 3},
+				float robertsKernel[][] = {{9, 2, 3},
 										{4, 5, 6},
 										{7, 8, 9}};
-				_kernelPanel.setKernelValues(meanKernel);
+				_kernelPanel.setKernelValues(robertsKernel);
 			} 
 			break;
 			case 10: // Roberts -45 degrees
 			{
-				float meanKernel[][] = {{10, 2, 3},
+				float robertsKernel[][] = {{10, 2, 3},
 										{4, 5, 6},
 										{7, 8, 9}};
-				_kernelPanel.setKernelValues(meanKernel);
+				_kernelPanel.setKernelValues(robertsKernel);
 			} 
 			break;
 			case 0: // Custom

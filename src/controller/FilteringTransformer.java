@@ -41,6 +41,11 @@ public class FilteringTransformer extends AbstractTransformer{
 		System.out.println("[" + (_coordinates.getColumn() - 1) + "]["
                                    + (_coordinates.getRow() - 1) + "] = " 
                                    + _value);
+
+        int column = _coordinates.getColumn() - 1;
+        int row = _coordinates.getRow() - 1;
+
+        filter.setFilterMatrixSpecificValue(column, row, _value);
 	}
 		
 	/**

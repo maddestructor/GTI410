@@ -64,5 +64,7 @@ public class Filter {
 	public ImageConversionStrategy getImageConversionStrategy() {
 		return conversionStrategy;
 	}
+
+    public void setFilterMatrixSpecificValue(int column, int row, double value){}
 	
 }
