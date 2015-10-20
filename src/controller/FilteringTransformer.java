@@ -31,7 +31,7 @@ import model.Shape;
  * @version $Revision: 1.6 $
  */
 public class FilteringTransformer extends AbstractTransformer{
-	Filter filter = new MeanFilter3x3(new PaddingZeroStrategy(), new ImageClampStrategy());
+	Filter filter = new Filter3x3(new PaddingZeroStrategy(), new ImageClampStrategy());
 	
 	/**
 	 * @param _coordinates

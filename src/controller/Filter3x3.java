@@ -24,22 +24,34 @@ import model.*;
  * @author unascribed
  * @version $Revision: 1.11 $
  */
-public class MeanFilter3x3 extends Filter {	
-	private double filterMatrix[][] = null;
+public class Filter3x3 extends Filter {	
+	private float filterMatrix[][] = null;
 	
 	/**
 	 * Default constructor.
 	 * @param paddingStrategy PaddingStrategy used 
 	 * @param conversionStrategy ImageConversionStrategy used
 	 */
-	public MeanFilter3x3(PaddingStrategy paddingStrategy, 
+	public Filter3x3(PaddingStrategy paddingStrategy, 
 						 ImageConversionStrategy conversionStrategy) {
 		super(paddingStrategy, conversionStrategy);	
-		filterMatrix = new double[3][3];
+		filterMatrix = new float[3][3];
 		
 		filterMatrix[0][0] = filterMatrix[1][0] = filterMatrix[2][0] = 
 		filterMatrix[0][1] = filterMatrix[1][1] = filterMatrix[2][1] =
-		filterMatrix[0][2] = filterMatrix[1][2] = filterMatrix[2][2] = (1.0/9.0);
+		filterMatrix[0][2] = filterMatrix[1][2] = filterMatrix[2][2] = 1;
+	}
+	
+	/**
+	 * Default constructor.
+	 * @param paddingStrategy PaddingStrategy used 
+	 * @param conversionStrategy ImageConversionStrategy used
+	 */
+	public Filter3x3(PaddingStrategy paddingStrategy, 
+						 ImageConversionStrategy conversionStrategy, float[][] fillMatrix) {
+		super(paddingStrategy, conversionStrategy);	
+		filterMatrix = fillMatrix;
+		
 	}
 	
 	/**
