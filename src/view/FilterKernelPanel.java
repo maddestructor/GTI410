@@ -196,33 +196,33 @@ public class FilterKernelPanel extends JPanel implements ObserverIF {
 			break;
 			case 5: // Prewitt Horiz
 			{
-				float prewittHKernel[][] = {{5, 2, 3},
-										{4, 5, 6},
-										{7, 8, 9}};
+				float prewittHKernel[][] = {{-1, -1, -1},
+						{0, 0, 0},
+						{1, 1, 1}};
 				_kernelPanel.setKernelValues(prewittHKernel);
 			} 
 			break;
 			case 6: // Prewitt Vert
 			{
-				float prewittVKernel[][] = {{6, 2, 3},
-										{4, 5, 6},
-										{7, 8, 9}};
+				float prewittVKernel[][] = {{-1, 0, 1},
+						{-1, 0, 1},
+						{-1, 0, 1}};
 				_kernelPanel.setKernelValues(prewittVKernel);
 			} 
 			break;
 			case 7: // Sobel Horiz 
 			{
-				float sobelHKernel[][] = {{-1, 0, 1},
-										{-2, 0, 2},
-										{-1, 0, 1}};
+				float sobelHKernel[][] = {{-1, -2, -1},
+						{0, 0, 0},
+						{1, 2, 1}};
 				_kernelPanel.setKernelValues(sobelHKernel);
 			} 
 			break;
 			case 8: // Sobel Vert
 			{
-				float sobelVKernel[][] = {{-1, -2, -1},
-										{0, 0, 0},
-										{1, 2, 1}};
+				float sobelVKernel[][] = {{-1, 0, 1},
+						{-2, 0, 2},
+						{-1, 0, 1}};
 				_kernelPanel.setKernelValues(sobelVKernel);
 			} 
 			break;
