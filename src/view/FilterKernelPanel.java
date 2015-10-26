@@ -148,8 +148,8 @@ public class FilterKernelPanel extends JPanel implements ObserverIF {
 	
 	private float getGaussianMatrixAtPosition(int x, int y)
 	{
-		double o = 0.5;
-		return (float) Math.exp(-(Math.pow(x, 2) + Math.pow(y, 2)) / (2 * Math.pow(o, 2)));
+		double o = 0.9;
+		return (float) ((1 / (2 * Math.PI * Math.pow(o, 2))) *((float) Math.exp(-(Math.pow(x, 2) + Math.pow(y, 2)) / (2 * Math.pow(o, 2)))));
 	}
 	
 	private void setFilter(String string) {
@@ -170,7 +170,7 @@ public class FilterKernelPanel extends JPanel implements ObserverIF {
 			break;
 			case 2: // Gaussian filter
 			{
-				double o = 0.5;
+				double o = 0.8;
 
 				float gaussianKernel[][] = {{getGaussianMatrixAtPosition(-1, 1), getGaussianMatrixAtPosition(0, 1), getGaussianMatrixAtPosition(1, 1)},
 										{getGaussianMatrixAtPosition(-1,0), getGaussianMatrixAtPosition(0,0), getGaussianMatrixAtPosition(1,0)},

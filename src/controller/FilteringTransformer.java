@@ -32,6 +32,7 @@ import model.Shape;
  */
 public class FilteringTransformer extends AbstractTransformer{
 	Filter filter = new Filter3x3(new PaddingZeroStrategy(), new ImageClampStrategy());
+	static final String MIRROR = "Mirror";
 	
 	/**
 	 * @param _coordinates
@@ -83,7 +84,11 @@ public class FilteringTransformer extends AbstractTransformer{
 	 * @param string
 	 */
 	public void setBorder(String string) {
-		System.out.println(string);
+		if (string == MIRROR)
+		{
+			
+			
+		}
 	}
 
 	/**
