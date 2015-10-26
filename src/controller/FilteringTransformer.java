@@ -84,10 +84,9 @@ public class FilteringTransformer extends AbstractTransformer{
 	 * @param string
 	 */
 	public void setBorder(String string) {
-		if (string == MIRROR)
+		if (string.contains(MIRROR))
 		{
-			
-			
+			filter.setPaddingStrategy(new PaddingMirrorStrategy());
 		}
 	}
 
