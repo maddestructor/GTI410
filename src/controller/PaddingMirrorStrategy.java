@@ -77,34 +77,34 @@ public class PaddingMirrorStrategy extends PaddingStrategy {
 			if (x < 0 && y < 0)
 			{
 				//System.out.println(x +"-"+y);
-				return new PixelDouble(image.getPixel(x+1, y+1));
+				return new PixelDouble(image.getPixel(x + 2, y + 2));
 			}
 			else if (x < 0 && y > image.getImageHeight()-1)
 			{
 				//System.out.println(x +"-"+y);
-				return new PixelDouble(image.getPixel(x+1, y-1));
+				return new PixelDouble(image.getPixel(x + 2, y - 2));
 			}
 			else if (x > image.getImageWidth()-1 && y < 0)
 			{
 				//System.out.println(x +"-"+y);
-				return new PixelDouble(image.getPixel(x-1, y+1));
+				return new PixelDouble(image.getPixel(x - 2, y + 2));
 			}
 			else if (x > image.getImageWidth()-1 && y > image.getImageHeight()-1)
 			{
 				//System.out.println(x +"-"+y);
-				return new PixelDouble(image.getPixel(x-1, y-1));
+				return new PixelDouble(image.getPixel(x - 2, y - 2));
 			}
 			else if (x > image.getImageWidth()-1)
-				return new PixelDouble(image.getPixel(x-1, y));
+				return new PixelDouble(image.getPixel(x - 2, y));
 			else if (x < 0)
 			{
 				//System.out.println(x +"-"+y);
-				return new PixelDouble(image.getPixel(x+1, y));
+				return new PixelDouble(image.getPixel(x + 2, y));
 			}
 			else if (y > image.getImageHeight()-1)
-				return new PixelDouble(image.getPixel(x, y-1));
-			else 
-				return new PixelDouble(image.getPixel(x, y+1));
+				return new PixelDouble(image.getPixel(x, y - 2));
+			else
+				return new PixelDouble(image.getPixel(x, y + 2));
 
 		}
 	}

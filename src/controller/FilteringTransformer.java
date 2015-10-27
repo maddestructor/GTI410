@@ -14,12 +14,12 @@
 */
 package controller;
 
-import java.awt.event.MouseEvent;
-import java.util.List;
-
 import model.ImageDouble;
 import model.ImageX;
 import model.Shape;
+
+import java.awt.event.MouseEvent;
+import java.util.List;
 
 /**
  * 
@@ -31,8 +31,9 @@ import model.Shape;
  * @version $Revision: 1.6 $
  */
 public class FilteringTransformer extends AbstractTransformer{
-	Filter filter = new Filter3x3(new PaddingZeroStrategy(), new ImageClampStrategy());
-	static final String MIRROR = "Mirror";
+    static final String MIRROR = "Mirror";
+    static final String COPY = "Copy";
+    Filter filter = new Filter3x3(new PaddingZeroStrategy(), new ImageClampStrategy());
 	
 	/**
 	 * @param _coordinates
@@ -87,8 +88,12 @@ public class FilteringTransformer extends AbstractTransformer{
 		if (string.contains(MIRROR))
 		{
 			filter.setPaddingStrategy(new PaddingMirrorStrategy());
-		}
-	}
+		} else if (string.contains(COPY)) {
+            filter.setPaddingStrategy(new PaddingCopyStrategy());
+        } else {
+            filter.setPaddingStrategy(new PaddingZeroStrategy());
+        }
+    }
 
 	/**
 	 * @param string
