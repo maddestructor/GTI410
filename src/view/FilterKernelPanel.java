@@ -146,12 +146,6 @@ public class FilterKernelPanel extends JPanel implements ObserverIF {
 		_filterTypeComboBox.setSelectedIndex(0);
 	}
 	
-	private float getGaussianMatrixAtPosition(int x, int y)
-	{
-		double o = 0.9;
-		return (float) ((1 / (2 * Math.PI * Math.pow(o, 2))) *((float) Math.exp(-(Math.pow(x, 2) + Math.pow(y, 2)) / (2 * Math.pow(o, 2)))));
-	}
-	
 	private void setFilter(String string) {
 		int index = 0;
 		for (int i = 0; i < KernelModel.FILTER_TYPE_ARRAY.length; ++i) {
@@ -170,11 +164,10 @@ public class FilterKernelPanel extends JPanel implements ObserverIF {
 			break;
 			case 2: // Gaussian filter
 			{
-				double o = 10;
 
-				float gaussianKernel[][] = {{getGaussianMatrixAtPosition(-1, 1), getGaussianMatrixAtPosition(0, 1), getGaussianMatrixAtPosition(1, 1)},
-										{getGaussianMatrixAtPosition(-1,0), getGaussianMatrixAtPosition(0,0), getGaussianMatrixAtPosition(1,0)},
-										{getGaussianMatrixAtPosition(-1,-1), getGaussianMatrixAtPosition(0,-1), getGaussianMatrixAtPosition(1,-1)}};
+				float gaussianKernel[][] = {{(float) (1.0 / 16.0), (float) (1.0 / 8.0), (float) (1.0 / 16.0)},
+						{(float) (1.0 / 8.0), (float) (1.0 / 4.0), (float) (1.0 / 8.0)},
+						{(float) (1.0 / 16.0), (float) (1.0 / 8.0), (float) (1.0 / 16.0)}};
 				_kernelPanel.setKernelValues(gaussianKernel);
 			} 
 			break;
