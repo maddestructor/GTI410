@@ -33,6 +33,7 @@ import java.util.List;
 public class FilteringTransformer extends AbstractTransformer{
     static final String MIRROR = "Mirror";
     static final String COPY = "Copy";
+    static final String NORMALIZE = "Normalize 0 to 255";
     Filter filter = new Filter3x3(new PaddingZeroStrategy(), new ImageClampStrategy());
 	
 	/**
@@ -100,5 +101,10 @@ public class FilteringTransformer extends AbstractTransformer{
 	 */
 	public void setClamp(String string) {
 		System.out.println(string);
-	}
+        if (string.contains(NORMALIZE)) {
+            filter.setImageConversionStrategy(new ImageNormalizeStrategy());
+        } else {
+            filter.setImageConversionStrategy(new ImageClampStrategy());
+        }
+    }
 }
