@@ -24,21 +24,16 @@ public class PaddingCopyStrategy extends PaddingStrategy {
             return image.getPixel(x, y);
         } else {
             if (x < 0 && y < 0) {
-                //System.out.println(x +"-"+y);
                 return new Pixel(image.getPixel(x + 1, y + 1).getARGB());
             } else if (x < 0 && y > image.getImageHeight() - 1) {
-                //System.out.println(x +"-"+y);
                 return new Pixel(image.getPixel(x + 1, y - 1).getARGB());
             } else if (x > image.getImageWidth() - 1 && y < 0) {
-                //System.out.println(x +"-"+y);
                 return new Pixel(image.getPixel(x - 1, y + 1).getARGB());
             } else if (x > image.getImageWidth() - 1 && y > image.getImageHeight() - 1) {
-                //System.out.println(x +"-"+y);
                 return new Pixel(image.getPixel(x - 1, y - 1).getARGB());
             } else if (x > image.getImageWidth() - 1)
                 return new Pixel(image.getPixel(x - 1, y).getARGB());
             else if (x < 0) {
-                //System.out.println(x +"-"+y);
                 return new Pixel(image.getPixel(x + 1, y).getARGB());
             } else if (y > image.getImageHeight() - 1)
                 return new Pixel(image.getPixel(x, y - 1).getARGB());
@@ -65,21 +60,16 @@ public class PaddingCopyStrategy extends PaddingStrategy {
             return image.getPixel(x, y);
         } else {
             if (x < 0 && y < 0) {
-                //System.out.println(x +"-"+y);
                 return new PixelDouble(image.getPixel(x + 1, y + 1));
             } else if (x < 0 && y > image.getImageHeight() - 1) {
-                //System.out.println(x +"-"+y);
                 return new PixelDouble(image.getPixel(x + 1, y - 1));
             } else if (x > image.getImageWidth() - 1 && y < 0) {
-                //System.out.println(x +"-"+y);
                 return new PixelDouble(image.getPixel(x - 1, y + 1));
             } else if (x > image.getImageWidth() - 1 && y > image.getImageHeight() - 1) {
-                //System.out.println(x +"-"+y);
                 return new PixelDouble(image.getPixel(x - 1, y - 1));
             } else if (x > image.getImageWidth() - 1)
                 return new PixelDouble(image.getPixel(x - 1, y));
             else if (x < 0) {
-                //System.out.println(x +"-"+y);
                 return new PixelDouble(image.getPixel(x + 1, y));
             } else if (y > image.getImageHeight() - 1)
                 return new PixelDouble(image.getPixel(x, y - 1));
