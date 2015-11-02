@@ -63,8 +63,8 @@ public class ImageNormalizeStrategy extends ImageConversionStrategy {
      * afin de l'évaluer et d'en retourner un nouveau avec la normalisation.
      *
      * @param pixel    Le pixel à évaluer
-     * @param maxValues La valeur maximale par rapport à laquelle on normalise
-     * @param minValues La valeur minimale par rapport à laquelle on normalise
+     * @param maxValues Les valeurs maximales par rapport auxquelles on normalise
+     * @param minValues Les valeurs minimales par rapport auxquelles on normalise
      */
     private Pixel normalize0To255(PixelDouble pixel, int[] maxValues, int[] minValues) {
 
