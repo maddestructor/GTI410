@@ -107,6 +107,7 @@ public class Curves extends AbstractTransformer implements DocObserver {
 			curve.setCurveType(new PolylineCurveType(CurvesModel.LINEAR));
 		} else if (string == CurvesModel.HERMITE) {
 			curve.setCurveType(new PolylineCurveType(CurvesModel.HERMITE));
+			System.out.println("yo");
 		} else if (string == CurvesModel.BSPLINE) {
 			curve.setCurveType(new PolylineCurveType(CurvesModel.BSPLINE));
 		} else {
