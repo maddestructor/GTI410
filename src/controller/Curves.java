@@ -105,6 +105,10 @@ public class Curves extends AbstractTransformer implements DocObserver {
 			curve.setCurveType(new BezierCurveType(CurvesModel.BEZIER));
 		} else if (string == CurvesModel.LINEAR) {
 			curve.setCurveType(new PolylineCurveType(CurvesModel.LINEAR));
+		} else if (string == CurvesModel.HERMITE) {
+			curve.setCurveType(new PolylineCurveType(CurvesModel.HERMITE));
+		} else if (string == CurvesModel.BSPLINE) {
+			curve.setCurveType(new PolylineCurveType(CurvesModel.BSPLINE));
 		} else {
 			System.out.println("Curve type [" + string + "] is unknown.");
 		}
