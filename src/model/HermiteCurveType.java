@@ -34,9 +34,11 @@ public class HermiteCurveType extends CurveType{
 	public Point evalCurveAt(List controlPoints, double t) {
 		List tVector = Matrix.buildRowVector4(t*t*t, t*t, t, 1);
 		List gVector = Matrix.buildColumnVector4(((ControlPoint)controlPoints.get(0)).getCenter(), 
-			((ControlPoint)controlPoints.get(2)).getCenter(), 
-			((ControlPoint)controlPoints.get(1)).getCenter(),
+			((ControlPoint)controlPoints.get(1)).getCenter(), 
+			((ControlPoint)controlPoints.get(2)).getCenter(),
 			((ControlPoint)controlPoints.get(3)).getCenter());
+		
+		
 		Point p = Matrix.eval(tVector, matrix, gVector);
 		return p;
 	}
@@ -46,6 +48,12 @@ public class HermiteCurveType extends CurveType{
 					            -3,  3, -2, -1,
 								 0,  0,  1, 0, 
 								 1,  0,  0, 0);
+	
+	private List conversionMatrix = 
+			Matrix.buildMatrix4( 1, 0,  0, 0, 
+					             0,  0, 0, 1,
+								-3, 3,  0, 0, 
+								 0,  0,  -3, 3);
 								 
 	private List matrix = hermiteMatrix;
 
