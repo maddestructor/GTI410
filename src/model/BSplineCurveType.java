@@ -13,7 +13,7 @@ public class BSplineCurveType extends CurveType {
 	@Override
 	public int getNumberOfSegments(int numberOfControlPoints) {
 		if (numberOfControlPoints >= 4) {
-			return (numberOfControlPoints - 1) / 3;
+			return numberOfControlPoints-3;
 		} else {
 			return 0;
 		}
@@ -27,7 +27,10 @@ public class BSplineCurveType extends CurveType {
 
 	@Override
 	public ControlPoint getControlPoint(List controlPoints, int segmentNumber, int controlPointNumber) {
-		int controlPointIndex = segmentNumber * 3 + controlPointNumber;
+		System.out.println(controlPoints.size());
+		System.out.println(segmentNumber);
+		System.out.println(controlPointNumber);
+		int controlPointIndex = segmentNumber + controlPointNumber;
 		return (ControlPoint)controlPoints.get(controlPointIndex);
 	}
 
