@@ -14,21 +14,12 @@
 */
 package controller;
 
-import java.awt.event.MouseEvent;
-import java.util.List;
-
+import model.*;
 import view.Application;
 import view.CurvesPanel;
-import model.BSplineCurveType;
-import model.BezierCurveType;
-import model.ControlPoint;
-import model.Curve;
-import model.CurvesModel;
-import model.DocObserver;
-import model.Document;
-import model.HermiteCurveType;
-import model.PolylineCurveType;
-import model.Shape;
+
+import java.awt.event.MouseEvent;
+import java.util.List;
 
 /**
  * <p>Title: Curves</p>
@@ -39,13 +30,17 @@ import model.Shape;
  * @version $Revision: 1.9 $
  */
 public class Curves extends AbstractTransformer implements DocObserver {
-		
+
+	private boolean firstPoint = false;
+	private Curve curve;
+	private CurvesPanel cp;
+
 	/**
 	 * Default constructor
 	 */
 	public Curves() {
 		Application.getInstance().getActiveDocument().addObserver(this);
-	}	
+	}
 
 	/* (non-Javadoc)
 	 * @see controller.AbstractTransformer#getID()
@@ -56,7 +51,7 @@ public class Curves extends AbstractTransformer implements DocObserver {
 		firstPoint = true;
 		Document doc = Application.getInstance().getActiveDocument();
 		List selectedObjects = doc.getSelectedObjects();
-		boolean selectionIsACurve = false; 
+		boolean selectionIsACurve = false;
 		if (selectedObjects.size() > 0){
 			Shape s = (Shape)selectedObjects.get(0);
 			if (s instanceof Curve){
@@ -70,7 +65,7 @@ public class Curves extends AbstractTransformer implements DocObserver {
 				firstPoint = false;
 			}
 		}
-		
+
 		if (firstPoint) {
 			// First point means that we will have the first point of a new curve.
 			// That new curve has to be constructed.
@@ -79,9 +74,9 @@ public class Curves extends AbstractTransformer implements DocObserver {
 			setNumberOfSections(cp.getNumberOfSections());
 		}
 	}
-    
+
 	/**
-	 * 
+	 *
 	 */
 	protected boolean mouseReleased(MouseEvent e){
 		int mouseX = e.getX();
@@ -94,7 +89,7 @@ public class Curves extends AbstractTransformer implements DocObserver {
 		}
 		ControlPoint cp = new ControlPoint(mouseX, mouseY);
 		curve.addPoint(cp);
-				
+
 		return true;
 	}
 
@@ -118,22 +113,22 @@ public class Curves extends AbstractTransformer implements DocObserver {
 	public void alignControlPoint() {
 		if (curve != null) {
 			Document doc = Application.getInstance().getActiveDocument();
-			List selectedObjects = doc.getSelectedObjects(); 
+			List selectedObjects = doc.getSelectedObjects();
 			if (selectedObjects.size() > 0){
 				Shape s = (Shape)selectedObjects.get(0);
 				if (curve.getShapes().contains(s)){
 					int controlPointIndex = curve.getShapes().indexOf(s);
-					System.out.println("Try to apply G1 continuity on control point [" + controlPointIndex + "]");
+					System.out.println(curve.getCurveType());
 				}
 			}
-			
+
 		}
 	}
 	
 	public void symetricControlPoint() {
 		if (curve != null) {
 			Document doc = Application.getInstance().getActiveDocument();
-			List selectedObjects = doc.getSelectedObjects(); 
+			List selectedObjects = doc.getSelectedObjects();
 			if (selectedObjects.size() > 0){
 				Shape s = (Shape)selectedObjects.get(0);
 				if (curve.getShapes().contains(s)){
@@ -141,12 +136,8 @@ public class Curves extends AbstractTransformer implements DocObserver {
 					System.out.println("Try to apply C1 continuity on control point [" + controlPointIndex + "]");
 				}
 			}
-			
-		}
-	}
 
-	public void setNumberOfSections(int n) {
-		curve.setNumberOfSections(n);
+		}
 	}
 	
 	public int getNumberOfSections() {
@@ -155,11 +146,15 @@ public class Curves extends AbstractTransformer implements DocObserver {
 		else
 			return Curve.DEFAULT_NUMBER_OF_SECTIONS;
 	}
-	
+
+	public void setNumberOfSections(int n) {
+		curve.setNumberOfSections(n);
+	}
+
 	public void setCurvesPanel(CurvesPanel cp) {
 		this.cp = cp;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see model.DocObserver#docChanged()
 	 */
@@ -172,8 +167,4 @@ public class Curves extends AbstractTransformer implements DocObserver {
 	public void docSelectionChanged() {
 		activate();
 	}
-
-	private boolean firstPoint = false;
-	private Curve curve;
-	private CurvesPanel cp;
 }

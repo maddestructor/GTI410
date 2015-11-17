@@ -5,11 +5,12 @@ import java.util.List;
 
 public class BSplineCurveType extends CurveType {
 
+
     private List bSplineMatrix =
-            Matrix.buildMatrix4(-1 * 1.0 / 6.0, 3 * 1.0 / 6.0, -3 * 1.0 / 6.0, 1 * 1.0 / 6.0,
-                    3 * 1.0 / 6.0, -6 * 1.0 / 6.0, 3 * 1.0 / 6.0, 0 * 1.0 / 6.0,
-                    -3 * 1.0 / 6.0, 3 * 1.0 / 6.0, 0 * 1.0 / 6.0, 0 * 1.0 / 6.0,
-                    1 * 1.0 / 6.0, 0 * 1.0 / 6.0, 0 * 1.0 / 6.0, 0 * 1.0 / 6.0);
+            Matrix.buildMatrix4(-1.0 / 6.0, 3.0 / 6.0, -3.0 / 6.0, 1.0 / 6.0,
+                    3.0 / 6.0, -6.0 / 6.0, 3.0 / 6.0, 0.0,
+                    -3.0 / 6.0, 0.0, 3.0 / 6.0, 0.0,
+                    1.0 / 6.0, 4.0 / 6.0, 1.0 / 6.0, 0.0);
     private List matrix = bSplineMatrix;
 
 	public BSplineCurveType(String name) {
