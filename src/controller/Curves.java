@@ -18,6 +18,7 @@ import model.*;
 import view.Application;
 import view.CurvesPanel;
 
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
@@ -126,13 +127,22 @@ public class Curves extends AbstractTransformer implements DocObserver {
 	}
 	
 	public void symetricControlPoint() {
+		
 		if (curve != null) {
 			Document doc = Application.getInstance().getActiveDocument();
 			List selectedObjects = doc.getSelectedObjects();
+			System.out.println(selectedObjects.size());
 			if (selectedObjects.size() > 0){
 				Shape s = (Shape)selectedObjects.get(0);
-				if (curve.getShapes().contains(s)){
+				System.out.println(curve.getShapes());
+				System.out.println((Shape)s);
+				
+				if ((curve.getShapes()).contains(s)){
 					int controlPointIndex = curve.getShapes().indexOf(s);
+					Shape shape = (Shape) curve.getShapes().get(controlPointIndex);
+					
+					
+					
 					System.out.println("Try to apply C1 continuity on control point [" + controlPointIndex + "]");
 				}
 			}
