@@ -119,7 +119,20 @@ public class Curves extends AbstractTransformer implements DocObserver {
 				Shape s = (Shape)selectedObjects.get(0);
 				if (curve.getShapes().contains(s)){
 					int controlPointIndex = curve.getShapes().indexOf(s);
-					System.out.println(curve.getCurveType());
+					
+					Point p5 = ((ControlPoint)(Shape)curve.getShapes().get(controlPointIndex+1)).getCenter();
+					Point p4 = ((ControlPoint)(Shape)curve.getShapes().get(controlPointIndex)).getCenter();
+					Point p3 = ((ControlPoint)(Shape)curve.getShapes().get(controlPointIndex-1)).getCenter();
+					
+					int x =p4.x-p3.x;
+					int y =p4.y-p3.y;
+	
+					
+					Point newP4 = new Point(p3.x + (int)Math.round((p5.x - p3.x)/2.0), p3.y + (int)Math.round((p5.y - p3.y)/2.0));
+
+					
+					((Shape)curve.getShapes().get(controlPointIndex)).setCenter(newP4); 
+					((Shape)curve.getShapes().get(controlPointIndex)).notifyObservers();
 				}
 			}
 
@@ -131,19 +144,27 @@ public class Curves extends AbstractTransformer implements DocObserver {
 		if (curve != null) {
 			Document doc = Application.getInstance().getActiveDocument();
 			List selectedObjects = doc.getSelectedObjects();
-			System.out.println(selectedObjects.size());
 			if (selectedObjects.size() > 0){
 				Shape s = (Shape)selectedObjects.get(0);
-				System.out.println(curve.getShapes());
-				System.out.println((Shape)s);
 				
 				if ((curve.getShapes()).contains(s)){
 					int controlPointIndex = curve.getShapes().indexOf(s);
-					Shape shape = (Shape) curve.getShapes().get(controlPointIndex);
+					Point p5 = ((ControlPoint)(Shape)curve.getShapes().get(controlPointIndex+1)).getCenter();
+					Point p4 = ((ControlPoint)(Shape)curve.getShapes().get(controlPointIndex)).getCenter();
+					Point p3 = ((ControlPoint)(Shape)curve.getShapes().get(controlPointIndex-1)).getCenter();
+					
+					
+					Point newP4 = new Point(p3.x + (int)Math.round((p5.x - p3.x)/2.0), p3.y + (int)Math.round((p5.y - p3.y)/2.0));
+
+					
+					((Shape)curve.getShapes().get(controlPointIndex)).setCenter(newP4); 
+					((Shape)curve.getShapes().get(controlPointIndex)).notifyObservers();
 					
 					
 					
-					System.out.println("Try to apply C1 continuity on control point [" + controlPointIndex + "]");
+					
+					
+					//System.out.println("Try to apply C1 continuity on control point [" + shape.getCenter() + "]");
 				}
 			}
 

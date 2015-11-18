@@ -33,9 +33,6 @@ public class HermiteCurveType extends CurveType {
 
     @Override
     public ControlPoint getControlPoint(List controlPoints, int segmentNumber, int controlPointNumber) {
-        System.out.println(controlPoints.size());
-        System.out.println(segmentNumber);
-        System.out.println(controlPointNumber);
         int controlPointIndex = segmentNumber * 3 + controlPointNumber;
         return (ControlPoint) controlPoints.get(controlPointIndex);
     }
