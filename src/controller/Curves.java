@@ -121,11 +121,12 @@ public class Curves extends AbstractTransformer implements DocObserver {
 				if (curve.getShapes().contains(s)){
 					int controlPointIndex = curve.getShapes().indexOf(s);
 
-                    if (controlPointIndex >= 3 && curve.getShapes().size() >= 7) {
+                    if(controlPointIndex >= 3 && curve.getShapes().size() >= 7)
+                    {
                         //On prend les points necessaire
-                        Point p5 = curve.getShapes().get(controlPointIndex + 1).getCenter();
+                        Point p5 = curve.getShapes().get(controlPointIndex+1).getCenter();
                         Point p4 = curve.getShapes().get(controlPointIndex).getCenter();
-                        Point p3 = curve.getShapes().get(controlPointIndex - 1).getCenter();
+                        Point p3 = curve.getShapes().get(controlPointIndex-1).getCenter();
 
                         //On calcule nos vecteurs R1 et R4
                         int distance1X = p4.x - p3.x;
@@ -144,21 +145,23 @@ public class Curves extends AbstractTransformer implements DocObserver {
                         double coefficientKY2 = distance2Y / normeDistance2;
 
                         //Pour bouger le point P5, on utilise le coefficient K1 et pour P3 ce serait K2
-                        int newP5X = p4.x + (int) Math.round(coefficientKX1 * normeDistance2);
-                        int newP5Y = p4.y + (int) Math.round(coefficientKY1 * normeDistance2);
+                        int newP5X = p4.x + (int)Math.round(coefficientKX1 * normeDistance2);
+                        int newP5Y = p4.y + (int)Math.round(coefficientKY1 * normeDistance2);
 
                         //Le nouveau point
                         Point newP5 = new Point(newP5X, newP5Y);
 
-                        ((Shape) curve.getShapes().get(controlPointIndex + 1)).setCenter(newP5);
+                        ((Shape)curve.getShapes().get(controlPointIndex + 1)).setCenter(newP5);
 
                         curve.update();
-                    } else {
+                    }
+                    else
+                    {
                         System.out.println("This point is not valid");
                     }
 
                 }
-            }
+			}
 
 		}
 
@@ -172,35 +175,38 @@ public class Curves extends AbstractTransformer implements DocObserver {
 			if (selectedObjects.size() > 0){
 				Shape s = (Shape)selectedObjects.get(0);
 
-                if ((curve.getShapes()).contains(s)){
+				if ((curve.getShapes()).contains(s)){
 					int controlPointIndex = curve.getShapes().indexOf(s);
 
-                    if (controlPointIndex >= 3 && curve.getShapes().size() >= 7) {
-                        Point p5 = curve.getShapes().get(controlPointIndex + 1).getCenter();
+                    if(controlPointIndex >= 3 && curve.getShapes().size() >= 7)
+                    {
+                        Point p5 = curve.getShapes().get(controlPointIndex+1).getCenter();
                         Point p4 = curve.getShapes().get(controlPointIndex).getCenter();
-                        Point p3 = curve.getShapes().get(controlPointIndex - 1).getCenter();
+                        Point p3 = curve.getShapes().get(controlPointIndex-1).getCenter();
 
-                        Point newP4 = new Point(p3.x + (int) Math.round((p5.x - p3.x) / 2.0), p3.y + (int) Math.round((p5.y - p3.y) / 2.0));
+                        Point newP4 = new Point(p3.x + (int)Math.round((p5.x - p3.x)/2.0), p3.y + (int)Math.round((p5.y - p3.y)/2.0));
 
 
-                        ((Shape) curve.getShapes().get(controlPointIndex)).setCenter(newP4);
+                        ((Shape)curve.getShapes().get(controlPointIndex)).setCenter(newP4);
 
                         curve.update();
 
                         System.out.println("Try to apply C1 continuity on control point [" + controlPointIndex + "]");
-                    } else {
+                    }
+                    else
+                    {
                         System.out.println("This point is not valid");
                     }
 
 				}
 
-            }
+			}
 
 		}
 	}
 
 
-    public int getNumberOfSections() {
+	public int getNumberOfSections() {
 		if (curve != null)
 			return curve.getNumberOfSections();
 		else
