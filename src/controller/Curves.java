@@ -15,11 +15,10 @@
 package controller;
 
 import model.*;
-import model.Shape;
 import view.Application;
 import view.CurvesPanel;
 
-import java.awt.*;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
