@@ -123,9 +123,9 @@ public class Curves extends AbstractTransformer implements DocObserver {
                     if(controlPointIndex >= 3 && curve.getShapes().size() >= 7)
                     {
                         //On prend les points necessaire
-                        Point p5 = curve.getShapes().get(controlPointIndex+1).getCenter();
-                        Point p4 = curve.getShapes().get(controlPointIndex).getCenter();
-                        Point p3 = curve.getShapes().get(controlPointIndex-1).getCenter();
+                        Point p5 = ((ControlPoint) (Shape) curve.getShapes().get(controlPointIndex + 1)).getCenter();
+                        Point p4 = ((ControlPoint) (Shape) curve.getShapes().get(controlPointIndex)).getCenter();
+                        Point p3 = ((ControlPoint) (Shape) curve.getShapes().get(controlPointIndex - 1)).getCenter();
 
                         //On calcule nos vecteurs R1 et R4
                         int distance1X = p4.x - p3.x;
@@ -179,9 +179,9 @@ public class Curves extends AbstractTransformer implements DocObserver {
 
                     if(controlPointIndex >= 3 && curve.getShapes().size() >= 7)
                     {
-                        Point p5 = curve.getShapes().get(controlPointIndex+1).getCenter();
-                        Point p4 = curve.getShapes().get(controlPointIndex).getCenter();
-                        Point p3 = curve.getShapes().get(controlPointIndex-1).getCenter();
+                        Point p5 = ((ControlPoint) (Shape) curve.getShapes().get(controlPointIndex + 1)).getCenter();
+                        Point p4 = ((ControlPoint) (Shape) curve.getShapes().get(controlPointIndex)).getCenter();
+                        Point p3 = ((ControlPoint) (Shape) curve.getShapes().get(controlPointIndex - 1)).getCenter();
 
                         Point newP4 = new Point(p3.x + (int)Math.round((p5.x - p3.x)/2.0), p3.y + (int)Math.round((p5.y - p3.y)/2.0));
 
