@@ -15,10 +15,11 @@
 package controller;
 
 import model.*;
+import model.Shape;
 import view.Application;
 import view.CurvesPanel;
 
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
@@ -119,24 +120,48 @@ public class Curves extends AbstractTransformer implements DocObserver {
 				Shape s = (Shape)selectedObjects.get(0);
 				if (curve.getShapes().contains(s)){
 					int controlPointIndex = curve.getShapes().indexOf(s);
-					
-					Point p5 = ((ControlPoint)(Shape)curve.getShapes().get(controlPointIndex+1)).getCenter();
-					Point p4 = ((ControlPoint)(Shape)curve.getShapes().get(controlPointIndex)).getCenter();
-					Point p3 = ((ControlPoint)(Shape)curve.getShapes().get(controlPointIndex-1)).getCenter();
-					
-					int x =p4.x-p3.x;
-					int y =p4.y-p3.y;
-	
-					
-					Point newP4 = new Point(p3.x + (int)Math.round((p5.x - p3.x)/2.0), p3.y + (int)Math.round((p5.y - p3.y)/2.0));
 
-					
-					((Shape)curve.getShapes().get(controlPointIndex)).setCenter(newP4); 
-					((Shape)curve.getShapes().get(controlPointIndex)).notifyObservers();
-				}
-			}
+                    if (controlPointIndex >= 3 && curve.getShapes().size() >= 7) {
+                        //On prend les points necessaire
+                        Point p5 = curve.getShapes().get(controlPointIndex + 1).getCenter();
+                        Point p4 = curve.getShapes().get(controlPointIndex).getCenter();
+                        Point p3 = curve.getShapes().get(controlPointIndex - 1).getCenter();
+
+                        //On calcule nos vecteurs R1 et R4
+                        int distance1X = p4.x - p3.x;
+                        int distance1Y = p4.y - p3.y;
+                        int distance2X = p5.x - p4.x;
+                        int distance2Y = p5.y - p4.y;
+
+                        //La norme de nos vecteur nous donne la grandeur de ceux-ci
+                        double normeDistance1 = Math.sqrt((distance1X * distance1X) + (distance1Y * distance1Y));
+                        double normeDistance2 = Math.sqrt((distance2X * distance2X) + (distance2Y * distance2Y));
+
+                        //On peut ensuite calculer nos coefficients K à utiliser
+                        double coefficientKX1 = distance1X / normeDistance1;
+                        double coefficientKY1 = distance1Y / normeDistance1;
+                        double coefficientKX2 = distance2X / normeDistance2;
+                        double coefficientKY2 = distance2Y / normeDistance2;
+
+                        //Pour bouger le point P5, on utilise le coefficient K1 et pour P3 ce serait K2
+                        int newP5X = p4.x + (int) Math.round(coefficientKX1 * normeDistance2);
+                        int newP5Y = p4.y + (int) Math.round(coefficientKY1 * normeDistance2);
+
+                        //Le nouveau point
+                        Point newP5 = new Point(newP5X, newP5Y);
+
+                        ((Shape) curve.getShapes().get(controlPointIndex + 1)).setCenter(newP5);
+
+                        curve.update();
+                    } else {
+                        System.out.println("This point is not valid");
+                    }
+
+                }
+            }
 
 		}
+
 	}
 	
 	public void symetricControlPoint() {
@@ -146,32 +171,36 @@ public class Curves extends AbstractTransformer implements DocObserver {
 			List selectedObjects = doc.getSelectedObjects();
 			if (selectedObjects.size() > 0){
 				Shape s = (Shape)selectedObjects.get(0);
-				
-				if ((curve.getShapes()).contains(s)){
-					int controlPointIndex = curve.getShapes().indexOf(s);
-					Point p5 = ((ControlPoint)(Shape)curve.getShapes().get(controlPointIndex+1)).getCenter();
-					Point p4 = ((ControlPoint)(Shape)curve.getShapes().get(controlPointIndex)).getCenter();
-					Point p3 = ((ControlPoint)(Shape)curve.getShapes().get(controlPointIndex-1)).getCenter();
-					
-					
-					Point newP4 = new Point(p3.x + (int)Math.round((p5.x - p3.x)/2.0), p3.y + (int)Math.round((p5.y - p3.y)/2.0));
 
-					
-					((Shape)curve.getShapes().get(controlPointIndex)).setCenter(newP4); 
-					((Shape)curve.getShapes().get(controlPointIndex)).notifyObservers();
-					
-					
-					
-					
-					
-					//System.out.println("Try to apply C1 continuity on control point [" + shape.getCenter() + "]");
+                if ((curve.getShapes()).contains(s)){
+					int controlPointIndex = curve.getShapes().indexOf(s);
+
+                    if (controlPointIndex >= 3 && curve.getShapes().size() >= 7) {
+                        Point p5 = curve.getShapes().get(controlPointIndex + 1).getCenter();
+                        Point p4 = curve.getShapes().get(controlPointIndex).getCenter();
+                        Point p3 = curve.getShapes().get(controlPointIndex - 1).getCenter();
+
+                        Point newP4 = new Point(p3.x + (int) Math.round((p5.x - p3.x) / 2.0), p3.y + (int) Math.round((p5.y - p3.y) / 2.0));
+
+
+                        ((Shape) curve.getShapes().get(controlPointIndex)).setCenter(newP4);
+
+                        curve.update();
+
+                        System.out.println("Try to apply C1 continuity on control point [" + controlPointIndex + "]");
+                    } else {
+                        System.out.println("This point is not valid");
+                    }
+
 				}
-			}
+
+            }
 
 		}
 	}
-	
-	public int getNumberOfSections() {
+
+
+    public int getNumberOfSections() {
 		if (curve != null)
 			return curve.getNumberOfSections();
 		else
