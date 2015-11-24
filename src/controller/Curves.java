@@ -95,7 +95,9 @@ public class Curves extends AbstractTransformer implements DocObserver {
 	}
 
 	/**
-	 * @param string
+     * Cette méthode permet de changer le modèle de courbe utilisé
+     * en fonction de l'élément choisi dans la combo box de l'interface.
+     * @param string
 	 */
 	public void setCurveType(String string) {
 		if (string == CurvesModel.BEZIER) {
@@ -110,8 +112,22 @@ public class Curves extends AbstractTransformer implements DocObserver {
 			System.out.println("Curve type [" + string + "] is unknown.");
 		}
 	}
-	
-	public void alignControlPoint() {
+
+    /**
+     * Cette méthode est appelé lorsqu'on clique sur le bouton Aligned de l'interface graphique des courbes.
+     * Elle inspiré du matériel des notes du cours GTI410, mais aussi des notes des cours équivalents à
+     * l'université Simon Fraser et à L'université UMass Lowell. Le but de cette méthode est de créer une
+     * continuité G1 entre les deux vecteurs de direction qui relie deux courbes. Pour se faire, la méthode
+     * vérifie qu'un point de continuité est sélectionné et applique ensuite les correctifs afin de s'assurer
+     * que les deux vecteurs soient des équivalences sans pour autant être parfaitement égaux. Il est
+     * également important de noter que ce type de cotinuité (G1) peut devenir symmétrique (C1) si le
+     * cooéficient "k" est égale à 1. (P4 - P3) = k(P5 - P4)
+     *
+     * @source http://goo.gl/xsK3GQ
+     * @source http://goo.gl/uF6PsD
+     * @source UMass Lowell and Simon Fraser University's Introduction to Computer Graphics course notes
+     */
+    public void alignControlPoint() {
 		if (curve != null) {
 			Document doc = Application.getInstance().getActiveDocument();
 			List selectedObjects = doc.getSelectedObjects();
@@ -165,8 +181,20 @@ public class Curves extends AbstractTransformer implements DocObserver {
 		}
 
 	}
-	
-	public void symetricControlPoint() {
+
+    /**
+     * Cette méthode est appelé lorsqu'on clique sur le bouton Symmetric de l'interface graphique des courbes.
+     * Elle inspiré du matériel des notes du cours GTI410, mais aussi des notes des cours équivalents à
+     * l'université Simon Fraser et à L'université UMass Lowell. Le but de cette méthode est de créer une
+     * continuité C1 entre les deux vecteurs de direction qui relie deux courbes. Pour se faire, la méthode
+     * vérifie qu'un point de continuité est sélectionné et applique ensuite les correctifs afin de s'assurer
+     * que les deux vecteurs soient parfaitement égaux. (P4 - P3) = (P5 - P4)
+     *
+     * @source http://goo.gl/xsK3GQ
+     * @source http://goo.gl/uF6PsD
+     * @source UMass Lowell and Simon Fraser University's Introduction to Computer Graphics course notes
+     */
+    public void symetricControlPoint() {
 		
 		if (curve != null) {
 			Document doc = Application.getInstance().getActiveDocument();
