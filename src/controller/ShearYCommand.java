@@ -14,6 +14,10 @@
 */
 package controller;
 
+import model.Shape;
+
+import java.awt.geom.AffineTransform;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -26,6 +30,10 @@ import java.util.List;
  */
 public class ShearYCommand extends AnchoredTransformationCommand {
 
+	private MementoTracker mt = new MementoTracker();
+	private List objects;
+	private double angleDegrees;
+
 	/**
 	 * @param angleDegrees The angle to which the horizontal lines will be transformed.
 	 * @param anchor one of the predefined positions for the anchor point
@@ -35,15 +43,23 @@ public class ShearYCommand extends AnchoredTransformationCommand {
 		this.angleDegrees = angleDegrees;
 		objects = aObjects;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see controller.Command#execute()
 	 */
 	public void execute() {
 		System.out.println("command: shearing on y-axis to " + angleDegrees +
 				           " degrees anchored on " + getAnchor());
-				           		
-		// voluntarily undefined
+
+		Iterator iter = objects.iterator();
+		Shape shape;
+		while (iter.hasNext()) {
+			shape = (Shape) iter.next();
+			mt.addMememto(shape);
+			AffineTransform t = shape.getAffineTransform();
+			t.shear(0, Math.tan(Math.toRadians(angleDegrees)));
+			shape.setAffineTransform(t);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -52,9 +68,5 @@ public class ShearYCommand extends AnchoredTransformationCommand {
 	public void undo() {
 		mt.setBackMementos();
 	}
-
-	private MementoTracker mt = new MementoTracker();
-	private List objects;
-	private double angleDegrees;
 
 }
