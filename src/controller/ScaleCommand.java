@@ -59,14 +59,12 @@ public class ScaleCommand extends AnchoredTransformationCommand {
 			shape = (Shape)iter.next();
 			mt.addMememto(shape);
 			AffineTransform t = shape.getAffineTransform();
-			t.scale(sx, sy);
 			t.translate(x, y);
-			
-			
+			t.scale(sx, sy);
+			t.translate(-x, -y);
 			shape.setAffineTransform(t);
 		}
 
-		// voluntarily undefined
 	}
 
 	/* (non-Javadoc)
