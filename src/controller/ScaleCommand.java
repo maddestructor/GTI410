@@ -52,11 +52,17 @@ public class ScaleCommand extends AnchoredTransformationCommand {
 		
 		Iterator iter = objects.iterator();
 		Shape shape;
+		double x = this.getAnchorPoint(objects).getX();
+		double y = this.getAnchorPoint(objects).getY();
 		while(iter.hasNext()){
+			
 			shape = (Shape)iter.next();
 			mt.addMememto(shape);
 			AffineTransform t = shape.getAffineTransform();
 			t.scale(sx, sy);
+			t.translate(x, y);
+			
+			
 			shape.setAffineTransform(t);
 		}
 
