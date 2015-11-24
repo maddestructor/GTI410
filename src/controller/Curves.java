@@ -207,14 +207,19 @@ public class Curves extends AbstractTransformer implements DocObserver {
 
                     if(controlPointIndex >= 3 && curve.getShapes().size() >= 7)
                     {
+                        //On prend les points necessaire
                         Point p5 = ((ControlPoint) (Shape) curve.getShapes().get(controlPointIndex + 1)).getCenter();
                         Point p4 = ((ControlPoint) (Shape) curve.getShapes().get(controlPointIndex)).getCenter();
                         Point p3 = ((ControlPoint) (Shape) curve.getShapes().get(controlPointIndex - 1)).getCenter();
 
-                        Point newP4 = new Point(p3.x + (int)Math.round((p5.x - p3.x)/2.0), p3.y + (int)Math.round((p5.y - p3.y)/2.0));
+                        //Pour bouger le point P5, on utilise le coefficient K1 et pour P3 ce serait K2
+                        int newP5X = 2 * p4.x - p3.x;
+                        int newP5Y = 2 * p4.y - p3.y;
 
+                        //Le nouveau point
+                        Point newP5 = new Point(newP5X, newP5Y);
 
-                        ((Shape)curve.getShapes().get(controlPointIndex)).setCenter(newP4);
+                        ((Shape) curve.getShapes().get(controlPointIndex + 1)).setCenter(newP5);
 
                         curve.update();
 
